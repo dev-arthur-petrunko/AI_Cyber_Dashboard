@@ -32,7 +32,7 @@ AI-generated analyses**.
 
 ## 🖼 Screenshot Tour
 
-> 📸 *Images live in `docs/screenshots/` and are added separately.*
+> 📸 *Live captures from the running stack (backend :8010 + frontend :3001), v1.6.0.*
 
 ### 1. Mission Control — the main dashboard
 
