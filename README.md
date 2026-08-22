@@ -4,9 +4,9 @@
 
 **Global cyber threat intelligence platform — with a dedicated Ukraine focus**
 
-*Formerly known as UA Cyber Threat Dashboard · v1.6.0*
+*Formerly known as UA Cyber Threat Dashboard · v1.6.1*
 
-[![Version](https://img.shields.io/badge/version-1.6.0-3B82F6)](#-changelog-highlights)
+[![Version](https://img.shields.io/badge/version-1.6.1-3B82F6)](#-changelog-highlights)
 [![Frontend](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
 [![Backend](https://img.shields.io/badge/FastAPI-Python%203.14-009688)](https://fastapi.tiangolo.com)
 [![AI](https://img.shields.io/badge/Groq-GPT--OSS%20120B-F55036)](https://groq.com)
@@ -32,7 +32,7 @@ AI-generated analyses**.
 
 ## 🖼 Screenshot Tour
 
-> 📸 *Live captures from the running stack (backend :8010 + frontend :3001), v1.6.0.*
+> 📸 *Live captures from the running stack (backend :8010 + frontend :3001), v1.6.1.*
 
 ### 1. Mission Control — the main dashboard
 
@@ -105,9 +105,12 @@ the flag in the tab bar takes you there from anywhere.
 
 ![Phishing](docs/screenshots/05-phishing.png)
 
-Live phishing URLs from **OpenPhish, PhishTank and PhishStats** — brand
-impersonation ratings, target-country geo-resolution, verification status.
-Includes AI-generated example phishing letters for security-awareness training.
+Live phishing URLs from **OpenPhish, PhishTank and PhishStats** — now with a
+full analytics grid (recharts, 2×2): top impersonated **brands** (unknown-brand
+noise folded into a header badge), target-country geo-resolution, most-abused
+**top domains** and per-source corpus split. A dedicated counter tracks
+human-**verified** PhishTank entries. Includes AI-generated example phishing
+letters for security-awareness training.
 
 ---
 
@@ -115,8 +118,11 @@ Includes AI-generated example phishing letters for security-awareness training.
 
 ![Records](docs/screenshots/06-records.png)
 
-Full-text search (350 ms debounce) across every stored threat with type /
-severity filters and sorting. Export included. Every row shows CVSS or the
+Full-text search (350 ms debounce) across every stored threat with a composable
+filter panel: grouped **multi-source select** (UA / world / vendor RSS / CERT /
+phishing…), vendor, exploit maturity, date range, "has CVE" toggle and an
+**actor filter** that deep-links straight from the Sankey tracker. Sorting
+includes critical-first. Export included. Every row shows CVSS or the
 proprietary `local_score`, exploit maturity, EPSS probability, tags and
 attributed countries.
 
@@ -138,6 +144,12 @@ in the "Unknown state" bucket — so the invariant always holds:
 
 Solid Sankey links = country confirmed inside the record; dashed links =
 typical target from `ACTOR_TARGETS`.
+
+A third, independent lens answers *"where is a given sponsor's infrastructure
+physically hosted?"*: `GET /stats/sponsor-infrastructure` crosses actor
+attribution with IoC geo-location into (sponsor × infrastructure-country)
+pairs — without touching either of the two metrics above. Click any sponsor
+bar on the dashboard to expand its infrastructure mini-breakdown.
 
 ---
 
@@ -214,7 +226,9 @@ Optional keys unlock extra sources: `CLOUDFLARE_RADAR_API_TOKEN`,
 |---|---|
 | `GET /stats` | All dashboard aggregates (coherent by construction: Σ parts = total) |
 | `GET /stats/attribution` | Actor → sponsor-state totals |
-| `GET /threats` | Paginated, filterable threat feed |
+| `GET /stats/sponsor-infrastructure` | Sponsor × IoC-geo pairs: where each state's infrastructure is hosted |
+| `GET /threats` | Paginated threat feed; filters: source list, vendor, exploit maturity, dates, has-CVE, actor |
+| `GET /vendors` | Top affected vendors/products |
 | `GET /ddos-stats` | Cached Cloudflare Radar snapshots |
 | `GET /phishing/stats` | Phishing corpus statistics |
 | `GET /ai/{digest\|ddos\|ioc\|vendor\|ukraine}` | Daily AI analyses (503 until ready) |
