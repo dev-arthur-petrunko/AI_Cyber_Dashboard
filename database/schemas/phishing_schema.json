@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PhishingURLRecord",
+  "description": "Нормализованная запись фишингового URL (PhishTank, OpenPhish, PhishStats). Соответствует PhishingURLORM в app/models/phishing.py.",
+  "type": "object",
+  "required": ["external_id", "source", "url"],
+  "properties": {
+    "external_id": {
+      "type": "string",
+      "description": "Уникальный ID URL в источнике"
+    },
+    "source": {
+      "type": "string",
+      "description": "Источник (PhishTank, OpenPhish, PhishStats)"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Фишинговый URL"
+    },
+    "target_brand": {
+      "type": ["string", "null"],
+      "description": "Имитируемый бренд"
+    },
+    "host": {
+      "type": ["string", "null"],
+      "description": "Хост URL"
+    },
+    "domain": {
+      "type": ["string", "null"],
+      "description": "Домен URL"
+    },
+    "verified": {
+      "type": "string",
+      "enum": ["unverified", "verified", "false"],
+      "default": "unverified"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["online", "offline"],
+      "default": "online"
+    },
+    "target_country": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "first_seen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fetched_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

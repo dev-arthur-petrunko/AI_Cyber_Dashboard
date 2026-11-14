@@ -1,0 +1,717 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Світла тема = «бумага» (ч/б редизайн: жодного кольору, тільки сірі) */
+  :root {
+    --bg: #FAFAFA;
+    --panel: #FFFFFF;
+    --panel-raised: #F0F0F0;
+    /* Непрозорий шар для карток/таблиць — частинки фону НЕ проступають під цифрами */
+    --panel-card: rgba(255, 255, 255, 0.85);
+    --border: rgba(0, 0, 0, 0.14);
+    --border-strong: rgba(0, 0, 0, 0.32);
+    --text-primary: #0A0A0A;
+    --text-secondary: #404040;
+    --text-muted: #6B6B6B;
+    --glow-a: rgba(0, 0, 0, 0.03);
+    --glow-b: rgba(0, 0, 0, 0.02);
+    --glow-c: rgba(0, 0, 0, 0.03);
+    --accent-line: rgba(0, 0, 0, 0.4);
+    --grid-line: rgba(0, 0, 0, 0.05);
+    --sankey-halo: rgba(250, 250, 250, 0.9);
+    /* Семантичні токени Tailwind (RGB-тріплети): темна гама на світлому */
+    --bg-rgb: 250 250 250;
+    --critical: 10 10 10;
+    --warning: 51 51 51;
+    --signal: 82 82 82;
+    --info: 110 110 110;
+    --primary: 64 64 64;
+    --ua-gold: 96 96 96;
+    --ua-blue: 160 160 160;
+  }
+
+  /* Темна тема — «чорнило на темному папері» */
+  .dark {
+    --bg: #050505;
+    --panel: rgba(255, 255, 255, 0.04);
+    --panel-raised: rgba(255, 255, 255, 0.07);
+    /* Картки майже непрозорі (≈0.85) — фонові частинки не лягають під текст */
+    --panel-card: rgba(10, 10, 10, 0.85);
+    --border: rgba(255, 255, 255, 0.14);
+    --border-strong: rgba(255, 255, 255, 0.32);
+    --text-primary: #F5F5F5;
+    --text-secondary: #B8B8B8;
+    --text-muted: #8A8A8A;
+    --glow-a: rgba(255, 255, 255, 0.05);
+    --glow-b: rgba(255, 255, 255, 0.03);
+    --glow-c: rgba(255, 255, 255, 0.04);
+    --accent-line: rgba(255, 255, 255, 0.4);
+    --grid-line: rgba(255, 255, 255, 0.04);
+    --sankey-halo: rgba(5, 5, 5, 0.85);
+    /* Семантичні токени Tailwind (RGB-тріплети): світла гама на чорному */
+    --bg-rgb: 5 5 5;
+    --critical: 250 250 250;
+    --warning: 212 212 212;
+    --signal: 176 176 176;
+    --info: 140 140 140;
+    --primary: 140 140 140;
+    --ua-gold: 226 226 226;
+    --ua-blue: 100 100 100;
+  }
+
+  body {
+    @apply text-text-primary font-sans antialiased;
+    /* Матовий фон: без анімацій, без ґрадієнтів-ромбів — просто чистий чорний
+       (темна) / чистий світлий (світла). Анімований фон прибрано за запитом
+       власника: сайт підгальмовував. */
+    background: var(--bg);
+    background-attachment: fixed;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  html, body {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  html {
+    /* Завжди резервуємо місце під вертикальний скролбар: інакше поява/зникнення
+       скролбара при перемиканні режимів карти звужує viewport і карта світу
+       (react-svg-worldmap, size="responsive") трохи змінює розмір. */
+    overflow-y: scroll;
+  }
+
+  ::selection {
+    @apply bg-signal/30 text-text-primary;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.signal");
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, theme("colors.signal") 22%, transparent);
+  }
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  50% { box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.12); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes count-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes border-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; filter: blur(8px); }
+  50% { opacity: 0.8; filter: blur(12px); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+  25%, 75% { opacity: 0.9; }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.4s ease-out both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-count-pulse {
+  animation: count-pulse 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-scan-line {
+  animation: scan-line 3s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 20s linear infinite;
+}
+
+/* ─── GlobeShield (планета + кібербез) ───────────────────────── */
+@keyframes globe-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.globe-orbit {
+  animation: globe-orbit 12s linear infinite;
+  transform-origin: 19px 21px;
+}
+
+@keyframes globe-drift {
+  0% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  100% { transform: translateX(-5px); }
+}
+.globe-drift {
+  animation: globe-drift 8s ease-in-out infinite;
+}
+
+@keyframes shield-pulse-kf {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35)); }
+  50% { filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.7)); }
+}
+.shield-pulse {
+  animation: shield-pulse-kf 2.6s ease-in-out infinite;
+}
+
+.animate-flicker {
+  animation: flicker 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Staggered row animations */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+
+/* ─── AI section animations (Apple/Emil design) ──────────────── */
+.ai-section {
+  animation: ai-card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes ai-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Skeleton pulse with stagger */
+.ai-section .space-y-2 > div {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.ai-section .space-y-2 > div:nth-child(2) { animation-delay: 0.1s; }
+.ai-section .space-y-2 > div:nth-child(3) { animation-delay: 0.2s; }
+.ai-section .space-y-2 > div:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* Prose styling for AI analysis content */
+.prose-invert h2 + ul,
+.prose-invert h3 + ul {
+  margin-top: 0.5rem;
+}
+
+.prose-invert li {
+  padding: 0.25rem 0;
+  line-height: 1.5;
+}
+
+.prose-invert strong {
+  color: var(--text-primary, #e2e8f0);
+}
+
+/* ─── AI prose: rich markdown rendering ──────────────────────── */
+.prose-ai {
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  color: var(--text-secondary, #94a3b8);
+}
+
+.prose-ai h1 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, #e2e8f0);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.prose-ai h2 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, #e2e8f0);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border, rgba(255,255,255,0.06));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prose-ai h2::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--text-muted, #8A8A8A);
+  flex-shrink: 0;
+}
+
+.prose-ai h3 {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-primary, #e2e8f0);
+  margin-top: 1.25rem;
+  margin-bottom: 0.375rem;
+}
+
+.prose-ai p {
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+}
+
+.prose-ai strong {
+  font-weight: 600;
+  color: var(--text-primary, #e2e8f0);
+}
+
+/* Tables */
+.prose-ai table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.75rem;
+  width: 100%;
+  margin: 0.75rem 0;
+}
+
+.prose-ai thead th {
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #64748b);
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+}
+
+.prose-ai tbody td {
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: top;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.prose-ai tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.prose-ai tbody tr:hover {
+  background: rgba(255,255,255,0.015);
+}
+
+/* Lists */
+.prose-ai ul, .prose-ai ol {
+  margin: 0.5rem 0;
+  padding: 0;
+}
+
+.prose-ai li {
+  padding: 0.3rem 0;
+  line-height: 1.7;
+}
+
+.prose-ai li + li {
+  margin-top: 0.125rem;
+}
+
+/* Blockquote */
+.prose-ai blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--text-muted, #8A8A8A);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: rgba(255,255,255,0.04);
+  font-style: italic;
+  color: var(--text-muted, #64748b);
+}
+
+/* Horizontal rule */
+.prose-ai hr {
+  border: none;
+  height: 1px;
+  margin: 1.5rem 0;
+  background: linear-gradient(to right, transparent, var(--border, rgba(255,255,255,0.06)), transparent);
+}
+
+.prose-ai .overflow-x-auto {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border, rgba(255,255,255,0.06));
+  margin: 0.75rem 0;
+}
+
+.prose-ai .overflow-x-auto table {
+  margin: 0;
+}
+
+/* Smooth tab transition */
+.ai-section button {
+  transition: all 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ai-section button:active {
+  transform: scale(0.97);
+}
+
+/* Hover glow on AI cards */
+.ai-section .glass-card {
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.ai-section .glass-card:hover {
+  border-color: rgba(var(--signal, 0, 200, 150), 0.2);
+  box-shadow: 0 0 20px rgba(var(--signal, 0, 200, 150), 0.05);
+}
+.stagger-6 { animation-delay: 0.3s; }
+
+/* ==== Футуристичний дизайн ==== */
+
+/* Скляні панелі: напівпрозорість + блюр + м'який неоновий контур */
+.card,
+.glass-card {
+  position: relative;
+  /* Ч/б: панель карток майже непрозора — фонові частинки НЕ проступають під цифрами */
+  background: var(--panel-card);
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  box-shadow:
+    0 12px 32px -14px rgb(10 20 40 / 0.28),
+    0 2px 8px -2px rgb(10 20 40 / 0.14),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover,
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow:
+    0 14px 40px -14px rgb(10 20 40 / 0.32),
+    0 2px 8px -2px rgb(10 20 40 / 0.14),
+    0 0 0 1px color-mix(in srgb, var(--accent-line) 30%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+/* Світна верхня лінія-акцент на скляних картках (HUD) */
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Сітка-підкладка (cyber grid), згасає вниз */
+.cyber-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 35%, transparent 78%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 35%, transparent 78%);
+}
+
+/* Неонове світіння тексту (поточний колір) */
+.text-glow {
+  text-shadow: 0 0 16px color-mix(in srgb, currentColor 35%, transparent);
+}
+
+/* Яскраве неонове світіння */
+.text-glow-strong {
+  text-shadow:
+    0 0 24px color-mix(in srgb, currentColor 60%, transparent),
+    0 0 48px color-mix(in srgb, currentColor 30%, transparent);
+}
+
+/* Світіння значка-індикатора */
+.dot-glow {
+  box-shadow: 0 0 8px color-mix(in srgb, currentColor 70%, transparent);
+}
+
+/* HUD-куточки (рамки в стилі сканера) на картках */
+.hud-corners::before,
+.hud-corners::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--accent-line);
+  pointer-events: none;
+}
+.hud-corners::before {
+  top: 5px;
+  left: 5px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-top-left-radius: 5px;
+}
+.hud-corners::after {
+  right: 5px;
+  bottom: 5px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-bottom-right-radius: 5px;
+}
+
+/* Повільний дрейф світлових орб на фоні */
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(48px, -36px, 0) scale(1.12); }
+}
+.glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  pointer-events: none;
+  animation: drift 18s ease-in-out infinite;
+}
+
+/* Сканлайн — тонка горизонтальна лінія що повзе вниз */
+.scanline {
+  background: linear-gradient(
+    transparent 0%,
+    transparent 49.5%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 50.5%,
+    transparent 100%
+  );
+  background-size: 100% 200%;
+  animation: scanline-scroll 8s linear infinite;
+  opacity: 0.6;
+}
+@keyframes scanline-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+/* Анімована градієнтна рамка (conic) */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotate-gradient {
+  to { --angle: 360deg; }
+}
+.gradient-border-animated {
+  position: relative;
+  z-index: 0;
+}
+.gradient-border-animated::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle, 0deg), #FFFFFF, #9CA3AF, #525252, #D4D4D4, #FFFFFF);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotate-gradient 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Severity-барі з неоновим світінням */
+.severity-bar-glow {
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Кібер-пошук: світна рамка при фокусі */
+.cyber-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.cyber-input:focus {
+  border-color: color-mix(in srgb, theme("colors.signal") 60%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, theme("colors.signal") 15%, transparent), 0 0 16px color-mix(in srgb, theme("colors.signal") 10%, transparent);
+}
+
+/* Спіннер з glow */
+.spinner-glow {
+  border: 2px solid var(--border);
+  border-top-color: #F5F5F5;
+  border-radius: 9999px;
+  box-shadow: 0 0 12px color-mix(in srgb, #FFFFFF 25%, transparent);
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+/* --- DDoS planet: ��������� ���� ���� --------------------------- */
+@keyframes ddos-dash {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+
+.ddos-arc-dash {
+  stroke-dasharray: 5 11;
+  animation: ddos-dash 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ddos-arc-dash {
+    animation: none;
+  }
+}

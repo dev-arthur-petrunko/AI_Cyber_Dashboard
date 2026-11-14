@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+
+# Environment
+.env
+.env.local
+
+# Database
+data/*.db
+data/*.db-journal
+data/*.db-shm
+data/*.db-wal
+
+# ML experiments (downloads + artifacts)
+ml/data/
+ml/artifacts/
+
+# Node/Frontend
+node_modules/
+.next/
+.env.local
+next-env.d.ts
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+.pytest_cache/
+
+# Misc
+*.bak
+*.tmp
+.cache
+
+debug_*.py
+debug_*.txt
+debug_*.png
+data/debug_*
+
+# Throwaway scratch files / screenshots (не для публічного деплою)
+tmp_*
+/*.png
+*.pptx
+*.xlsx

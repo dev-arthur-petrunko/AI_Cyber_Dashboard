@@ -1,0 +1,22 @@
+{
+  "scenario": "Один и тот же инцидент из двух источников с разными external_id",
+  "record_a": {
+    "external_id": "CERT-UA-12345",
+    "source": "CERT-UA",
+    "title": "Фишинговая кампания против энергетики",
+    "url": "https://cert.gov.ua/article/12345",
+    "cve_id": null
+  },
+  "record_b": {
+    "external_id": "URLhaus-98765",
+    "source": "URLhaus",
+    "title": "Фишинговая кампания против энергетики",
+    "url": "https://cert.gov.ua/article/12345",
+    "cve_id": null
+  },
+  "behavior": {
+    "primary_key": "Разные (source, external_id) — обе записи сохраняются отдельно.",
+    "content_hash": "Одинаковый (title + url совпадают) — сигнал о возможном дубле из разных источников.",
+    "action": "Не объединять автоматически. Предложить ручное слияние или оставить как связанные записи."
+  }
+}

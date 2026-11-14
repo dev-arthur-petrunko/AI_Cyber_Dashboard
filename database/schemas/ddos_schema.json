@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DdosSnapshotRecord",
+  "description": "Временной срез DDoS-статистики Cloudflare Radar. Соответствует DdosSnapshotORM в app/models/ddos_snapshot.py. Уникальность не enforces — каждый запуск pipeline добавляет новый срез.",
+  "type": "object",
+  "required": ["captured_at", "scope", "metric_type", "payload", "source", "license"],
+  "properties": {
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Момент захвата снимка (UTC, naive)"
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["global", "UA"],
+      "description": "Область: глобальный или украинский сегмент"
+    },
+    "metric_type": {
+      "type": "string",
+      "description": "Тип метрики (layer3_summary, layer3_timeseries, layer3_top_targets, layer3_top_origins, layer7_summary, layer7_timeseries, layer7_top_targets, layer7_top_origins)"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Полезная нагрузка снимка (свободная структура JSON)"
+    },
+    "source": {
+      "type": "string",
+      "default": "Cloudflare Radar",
+      "description": "Источник данных"
+    },
+    "license": {
+      "type": "string",
+      "default": "CC BY-NC 4.0",
+      "description": "Лицензия источника"
+    }
+  },
+  "additionalProperties": false
+}

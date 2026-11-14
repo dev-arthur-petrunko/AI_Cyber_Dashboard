@@ -1,0 +1,992 @@
+{
+  "integrated_ua": [
+    {
+      "name": "CERT-UA",
+      "url": "https://cert.gov.ua",
+      "status": "active",
+      "description": "Офіційні попередження та звіти про кібератаки в Україні"
+    },
+    {
+      "name": "Interfax Ukraine",
+      "url": "https://interfax.com.ua",
+      "status": "active",
+      "description": "Новини про кіберзагрози та держустанови України"
+    },
+    {
+      "name": "ІМІ (Інститут масової інформації)",
+      "url": "https://imi.org.ua",
+      "status": "active",
+      "description": "Попередження про фішингові кампанії та інформаційну безпеку"
+    },
+    {
+      "name": "The Hacker News (Ukraine)",
+      "url": "https://thehackernews.com",
+      "status": "active",
+      "description": "Міжнародні матеріали про APT та атаки на Україну"
+    },
+    {
+      "name": "SOC Prime",
+      "url": "https://socprime.com/blog",
+      "status": "active",
+      "description": "Технічний аналіз та правила детекції для українських APT"
+    },
+    {
+      "name": "ThreatFox (abuse.ch)",
+      "url": "https://threatfox.abuse.ch",
+      "status": "active",
+      "license": "CC0 (public domain) — атрибуція не обов'язкова",
+      "description": "IoC-індикатори компрометації, пов'язані з українськими загрозами (потрібен API-ключ)"
+    },
+    {
+      "name": "ESET WeLiveSecurity",
+      "url": "https://www.welivesecurity.com",
+      "status": "active",
+      "description": "Аналітика вайперів та атак на українську інфраструктуру. Також у vendor_rss."
+    },
+    {
+      "name": "Cisco Talos Intelligence",
+      "url": "https://blog.talosintelligence.com/rss/",
+      "status": "active",
+      "description": "Технічні звіти Talos, партнерів CERT-UA"
+    },
+    {
+      "name": "Microsoft MSTIC",
+      "url": "https://www.microsoft.com/en-us/security/blog/feed/",
+      "status": "active",
+      "description": "Microsoft Security Blog: аналітика MSTIC, атрибуція акторів Storm-*. Зібрано без фільтра за Україною (колектор vendor_intel.py)."
+    },
+    {
+      "name": "Mandiant/Google TAG",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/rss/",
+      "status": "active",
+      "description": "Google Cloud Threat Intelligence (Mandiant): профілі UNC/APT-груп, найглибша технічна аналітика індустрії."
+    },
+    {
+      "name": "Check Point Research",
+      "url": "https://research.checkpoint.com/feed/",
+      "status": "active",
+      "description": "Дослідження Check Point: кампанії, малвер, вразливості."
+    },
+    {
+      "name": "Unit 42 (Palo Alto)",
+      "url": "https://unit42.paloaltonetworks.com/feed/",
+      "status": "active",
+      "description": "Threat intel-підрозділ Palo Alto Networks: APT, malware-розбори, хантинг."
+    },
+    {
+      "name": "CrowdStrike",
+      "url": "https://www.crowdstrike.com/blog/feed/",
+      "status": "active",
+      "description": "CrowdStrike Intelligence: актори BEAR/PANDA/SPIDER, щорічні Global Threat Reports."
+    },
+    {
+      "name": "SentinelLabs",
+      "url": "https://www.sentinelone.com/labs/feed/",
+      "status": "active",
+      "description": "SentinelOne Labs: дослідження APT (включно з регіоном СНД), wipers, ransomware."
+    },
+    {
+      "name": "Kaspersky Securelist",
+      "url": "https://securelist.com/feed/",
+      "status": "active",
+      "description": "Securelist від Kaspersky GReAT: APT-звіти по Україні/СНД, threat landscape."
+    },
+    {
+      "name": "Google TAG",
+      "url": "https://security.googleblog.com/feeds/posts/default",
+      "status": "active",
+      "description": "Google Threat Analysis Group: цільові фішингові кампанії та держактори."
+    },
+    {
+      "name": "SANS ISC",
+      "url": "https://isc.sans.edu/rssfeed_full.xml",
+      "status": "active",
+      "description": "Internet Storm Center: живі спостереження «що сканують прямо зараз», щоденні діаграми портів. Унікальний джерело момент-стану інтернету."
+    },
+    {
+      "name": "GreyNoise Labs",
+      "url": "https://www.greynoise.io/blog/rss.xml",
+      "status": "active",
+      "description": "GreyNoise: хто реально експлуатує CVE в моменті (масові скани), а не теоретично."
+    },
+    {
+      "name": "Microsoft MSRC",
+      "url": "https://api.msrc.microsoft.com/update-guide/rss",
+      "status": "active",
+      "description": "PSIRT Microsoft: офіційні patch-адвайзори (та сама стрічка, що рухає Patch Tuesday)."
+    },
+    {
+      "name": "Cisco PSIRT",
+      "url": "https://sec.cloudapps.cisco.com/security/center/psirtrss20/CiscoSecurityAdvisory.xml",
+      "status": "active",
+      "description": "PSIRT Cisco: security advisories з CVSS по обладнанню та ПЗ Cisco."
+    },
+    {
+      "name": "Fortinet PSIRT",
+      "url": "https://www.fortiguard.com/rss/ir.xml",
+      "status": "active",
+      "description": "PSIRT Fortinet: advisories по FortiGate/FortiOS (часта ціль масових сканів)."
+    },
+    {
+      "name": "Palo Alto PSIRT",
+      "url": "https://security.paloaltonetworks.com/rss.xml",
+      "status": "active",
+      "description": "PSIRT Palo Alto Networks: advisories по PAN-OS та іншому ПЗ."
+    },
+    {
+      "name": "Zero Day Initiative",
+      "url": "https://www.zerodayinitiative.com/rss/published/",
+      "status": "active",
+      "description": "ZDI (Trend Micro): опубліковані advisories, включно з 0-day без патча на момент публікації."
+    },
+    {
+      "name": "Кіберполіція України",
+      "url": "https://cyberpolice.gov.ua/articles/",
+      "status": "active",
+      "description": "Новини та попередження кіберполіції України (HTML-скрапер зі сторінки /articles/)"
+    }
+  ],
+  "telemetry_api": [
+    {
+      "name": "ThreatFox / MalwareBazaar (abuse.ch)",
+      "url": "https://mb-api.abuse.ch/",
+      "status": "active",
+      "license": "CC0 (public domain) — без атрибуції",
+      "description": "JSON API для свіжих IoC та семплів малварі за тегами (Ukraine, UAC-0010, Sandworm). Інтегровано з API-ключем abuse.ch.",
+      "requires_key": "ABUSECH_AUTH_KEY",
+      "docs": "https://mb-api.abuse.ch/"
+    },
+    {
+      "name": "URLhaus (abuse.ch)",
+      "url": "https://urlhaus.abuse.ch",
+      "status": "active",
+      "license": "CC0 (public domain) — без атрибуції",
+      "description": "Шкідливі URL-адреси (розповсюдження малварі, C2). Адаптовано до нового формату відповіді API abuse.ch.",
+      "requires_key": "ABUSECH_AUTH_KEY",
+      "docs": "https://urlhaus-api.abuse.ch/"
+    },
+    {
+      "name": "AlienVault OTX",
+      "url": "https://otx.alienvault.com",
+      "status": "active",
+      "license": "Формальної вимоги атрибуції в UI немає (умови — у ToS API)",
+      "description": "Велика база IoC та pulses (кампанії/звіти). Інтегровано з API-ключем.",
+      "requires_key": "OTX_API_KEY",
+      "docs": "https://otx.alienvault.com/api/"
+    },
+    {
+      "name": "Feodo Tracker",
+      "url": "https://feodotracker.abuse.ch",
+      "status": "active",
+      "license": "CC0 (public domain) — без атрибуції",
+      "description": "Активні C2-сервери банківських троянців Dridex/Emotet/TrickBot/QakBot/BazarLoader. CSV-блокліст без ключа; геолокація IP збагачується при зборі.",
+      "docs": "https://feodotracker.abuse.ch/"
+    },
+    {
+      "name": "SSLBL (SSL Blacklist)",
+      "url": "https://sslbl.abuse.ch",
+      "status": "active",
+      "license": "CC0 (public domain) — без атрибуції",
+      "description": "Шкідливі SSL-сертифікати та JA3-відбитки ботнет-C2 від abuse.ch. CSV без ключа, у базу зберігається до 400 найсвіжіших сертифікатів за запуск.",
+      "docs": "https://sslbl.abuse.ch/"
+    },
+    {
+      "name": "YARAify",
+      "url": "https://yaraify.abuse.ch",
+      "status": "planned",
+      "problem": "API-запит yara_rules_recent повертає HTTP 404 — потрібне уточнення актуального формату запиту до API YARAify.",
+      "possible_solution": "Перевірити документацію yaraify.abuse.ch/api/ і додати колектор останніх YARA/ClamAV-правил для хантингу по MalwareBazaar-семплах.",
+      "description": "YARA/ClamAV-правила для хантингу по MalwareBazaar-самплах (той самий провайдер abuse.ch, ліцензія CC0)."
+    },
+    {
+      "name": "Shadowserver Foundation",
+      "url": "https://www.shadowserver.org",
+      "status": "planned",
+      "description": "Статистика заражених пристроїв, DDoS та сканувань. Повні дампи вимагають підписки як CERT/AS-власник.",
+      "requires_key": null,
+      "docs": "https://api.shadowserver.org/"
+    },
+    {
+      "name": "Spamhaus DROP",
+      "url": "https://www.spamhaus.org/drop/drop.txt",
+      "status": "active",
+      "license": "Безкоштовно для некомерційного/мережевого використання (Spamhaus Project)",
+      "description": "Мережі, задіяні у спамі/ботнетах/DDoS-інфраструктурі. З 2025 EDROP злитий у DROP, тому окремий edrop.txt не збирається. Кожна CIDR-мережа — окремий IoC-запис із посиланням на SBL.",
+      "docs": "https://www.spamhaus.org/drop/"
+    },
+    {
+      "name": "ET Compromised IPs",
+      "url": "https://rules.emergingthreats.net/blockrules/compromised-ips.txt",
+      "status": "active",
+      "license": "Відкриті дані Emerging Threats (Proofpoint)",
+      "description": "Скомпрометовані хости (відкритий блокліст Proofpoint ET). Без ключа; геолокація IP збагачується при зборі.",
+      "docs": "https://rules.emergingthreats.net/"
+    },
+    {
+      "name": "CIRCL OSINT",
+      "url": "https://www.circl.lu/doc/misp/feed-osint/",
+      "status": "active",
+      "license": "Відкриті дані CIRCL (Luxembourg CERT)",
+      "description": "Агрегований OSINT-фід державного CERT Люксембургу у форматі MISP: події з атрибутами (IP, домени, hash) без реєстрації. За запуск береться до 20 найсвіжіших подій.",
+      "docs": "https://www.circl.lu/doc/misp/feed-osint/"
+    },
+    {
+      "name": "Cloudflare Radar (DDoS)",
+      "db_table": "ddos_snapshots",
+      "url": "https://radar.cloudflare.com/",
+      "status": "active",
+      "description": "Світова DDoS-статистика (layer3/layer7): топ країн-цілей і джерел, часові ряди за 30 днів. Збирається за розкладом у таблицю ddos_snapshots (не live-запитами з UI); API /ddos-stats* кешується на 1 годину. Застереження: для layer7 топ-локацій Cloudflare ігнорує фільтр країни-цілі (показує глобальні дані); часові ряди та layer3 фільтруються коректно. Ліцензія CC BY-NC 4.0.",
+      "requires_key": "CLOUDFLARE_RADAR_API_TOKEN",
+      "docs": "https://developers.cloudflare.com/radar/",
+      "license": "CC BY-NC 4.0"
+    }
+  ],
+  "world_sources": [
+    {
+      "name": "NVD",
+      "url": "https://nvd.nist.gov",
+      "status": "active",
+      "license": "Public domain (урядовий відкритий API США) — атрибуція не обов'язкова",
+      "description": "Національна база вразливостей США: CVE, CVSS-бали, CPE. Офіційний API (для частини нових CVE-2026 CVSS може бути відсутній — тоді використовується власна оцінка з позначкою *)",
+      "docs": "https://nvd.nist.gov/developers/vulnerabilities"
+    },
+    {
+      "name": "CISA KEV",
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "status": "active",
+      "license": "Public domain (урядові дані США)",
+      "description": "Каталог вразливостей, які реально експлуатуються у природі (In the wild) — найбільше джерело у базі",
+      "docs": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+    },
+    {
+      "name": "GitHub (PoC)",
+      "url": "https://github.com",
+      "status": "active",
+      "license": "Публічні дані, атрибуція не потрібна",
+      "description": "Публічні PoC-експлойти та GitHub Security Advisories (GitHub API). Для частини CVE є кілька PoC-репозиторіїв"
+    },
+    {
+      "name": "Exploit-DB",
+      "url": "https://www.exploit-db.com",
+      "status": "active",
+      "description": "Готові експлойти (CSV-дзеркало на GitLab). Вікно збору 60 днів, бо дзеркало відстає від live-бази на ~місяць"
+    },
+    {
+      "name": "NCSC UK",
+      "url": "https://www.ncsc.gov.uk",
+      "status": "active",
+      "description": "Офіційні звіти британського національного центру кібербезпеки (RSS)"
+    },
+    {
+      "name": "The Hacker News",
+      "url": "https://thehackernews.com",
+      "status": "active",
+      "description": "Міжнародні новини про APT, атаки та вразливості (RSS)"
+    },
+    {
+      "name": "BleepingComputer",
+      "url": "https://www.bleepingcomputer.com",
+      "status": "active",
+      "description": "Новини кібербезпеки: інциденти, ransomware, патчі (RSS)"
+    }
+  ],
+  "vendor_rss": [
+    {
+      "name": "ESET WeLiveSecurity",
+      "url": "https://www.welivesecurity.com/feed/",
+      "status": "active",
+      "description": "Розбір вайперів (HermeticWiper, CaddyWiper) та атак на енергосети України"
+    },
+    {
+      "name": "Cisco Talos Intelligence",
+      "url": "https://blog.talosintelligence.com/rss/",
+      "status": "active",
+      "description": "Технічні звіти Talos, партнерів CERT-UA"
+    }
+  ],
+  "cert_international_new": [
+    {
+      "name": "BSI / CERT-Bund (Німеччина)",
+      "country": "DE",
+      "flag": "🇩🇪",
+      "org": "BSI / CERT-Bund",
+      "url": "https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/CERT-Bund/cert-bund_node.html",
+      "connection": "RSS + GitHub",
+      "status": "active",
+      "rss": "https://wid.cert-bund.de/content/public/securityAdvisory/rss",
+      "requires_key": null,
+      "description": "Державний CERT Німеччини. Інтегровано: робочий RSS wid.cert-bund.de (у фіді ~250 записів, у базу зберігається до 50 за запуск). Нюанс: у фіді немає CVE-ID — лише посилання на WID-SEC-сторінки; CVE можна збагатити окремим кроком.",
+      "possible_solution": "Працює. Опційно: окремий крок парсингу CVE зі сторінки wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-... ."
+    },
+    {
+      "name": "CERT-Bund GitHub",
+      "country": "DE",
+      "flag": "🇩🇪",
+      "org": "CERT-Bund",
+      "url": "https://github.com/CERT-Bund",
+      "connection": "GitHub API (відкриті дані/інструменти)",
+      "status": "active",
+      "rss": null,
+      "requires_key": "GITHUB_TOKEN (опційно)",
+      "description": "Офіційні репозиторії CERT-Bund з інструментами та open data. Інтегровано: GitHubOrgsCollector (app/collectors/github_poc.py) збирає нещодавно оновлені репозиторії org 'CERT-Bund'.",
+      "possible_solution": "Працює. Можна розширити список організацій у GITHUB_ORGS."
+    },
+    {
+      "name": "CCCS Canada (Canadian Centre for Cyber Security)",
+      "country": "CA",
+      "flag": "🇨🇦",
+      "org": "CCCS",
+      "url": "https://www.cyber.gc.ca/en/alerts-advisories",
+      "connection": "RSS (alerts + news)",
+      "status": "active",
+      "rss": "https://www.cyber.gc.ca/api/cccs/atom/v1/get?feed=alerts_advisories&lang=en",
+      "requires_key": null,
+      "description": "Канадський центр кібербезпеки. Інтегровано: колектор app/collectors/cert_rss.py, фіди alerts/advisories + news/guidance працюють (по 50 записів).",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "CCCS Canada News (Canadian Centre for Cyber Security)",
+      "country": "CA",
+      "flag": "🇨🇦",
+      "org": "CCCS",
+      "url": "https://www.cyber.gc.ca/en/guidance",
+      "connection": "RSS (news/guidance)",
+      "status": "active",
+      "rss": "https://www.cyber.gc.ca/api/cccs/atom/v1/get?feed=news_events_guidance&lang=en",
+      "requires_key": null,
+      "description": "Новинний фід CCCS Canada (guidance/news). Інтегровано через той самий колектор cert_rss.py.",
+      "possible_solution": "Працює."
+    },
+    {
+      "name": "ACSC Australia (Australian Cyber Security Centre)",
+      "country": "AU",
+      "flag": "🇦🇺",
+      "org": "ACSC",
+      "url": "https://www.cyber.gov.au/about-us/view-all-content/alerts-and-advisories",
+      "connection": "RSS (Alerts + Advisories)",
+      "status": "needs_setup",
+      "rss": "https://www.cyber.gov.au/rss/advisories",
+      "requires_key": null,
+      "problem": "Akamai стабільно блокує датацентрові IP (підтверджено незалежним джерелом, не тільки нашим колектором) — у базі 0 записів.",
+      "possible_solution": "Резидентний проксі — те саме рішення, що для SSSCIP/СБУ.",
+      "description": "Австралійський центр кібербезпеки. Фіди /rss/alerts і /rss/advisories живі з резидентних IP, але датацентрові адреси блокує Akamai. AusCERT лишається другим австралійським джерелом."
+    },
+    {
+      "name": "CERT-In (Індія)",
+      "country": "IN",
+      "flag": "🇮🇳",
+      "org": "CERT-In",
+      "url": "https://www.cert-in.org.in/",
+      "connection": "Веб-скрапінг (advisories)",
+      "status": "needs_setup",
+      "rss": null,
+      "requires_key": null,
+      "description": "Індійський CERT. Сайт cert-in.org.in недоступний з цієї мережі (ConnectTimeout). Веб-совети без відкритого RSS.",
+      "possible_solution": "Запуск з іншої мережі/проксі або моніторинг через архіватори."
+    },
+    {
+      "name": "CERT Polska / NASK (Польща)",
+      "country": "PL",
+      "flag": "🇵🇱",
+      "org": "CERT Polska (NASK)",
+      "url": "https://cert.pl/en/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://cert.pl/en/rss.xml",
+      "requires_key": null,
+      "description": "Польський CERT. Інтегровано через app/collectors/cert_rss.py (50 записів). Має власні системи threat-intel (Sinkhole, MWDB, Artemis) та відкритий GitHub (92 репо).",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "SingCERT (Сінгапур)",
+      "db_sources": ["SingCERT", "SingCERT Bulletins"],
+      "country": "SG",
+      "flag": "🇸🇬",
+      "org": "SingCERT (CSA)",
+      "url": "https://www.csa.gov.sg/alerts-and-advisories/alerts/",
+      "connection": "Веб-скрапінг (Isomer CMS / Next.js)",
+      "status": "active",
+      "rss": null,
+      "requires_key": null,
+      "description": "Сінгапурський CERT. RSS-фід видалено (404), але працює HTML-скрапер app/collectors/singcert_sg.py: збирає alerts (/alerts-and-advisories/alerts/) та bulletins (/alerts-and-advisories/bulletins/, зовнішні PDF). Сайт рендерить по 10 елементів — скрапер бере першу сторінку кожної стрічки.",
+      "possible_solution": "Працює. Якщо Isomer змінить верстку — оновити селектори в singcert_sg.py."
+    },
+    {
+      "name": "CERT-EU (ЄС) — Threat Intelligence",
+      "country": "EU",
+      "flag": "🇪🇺",
+      "org": "CERT-EU",
+      "url": "https://cert.europa.eu/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://cert.europa.eu/publications/threat-intelligence-rss",
+      "requires_key": null,
+      "description": "CERT Євросоюзу (25+ країн). Інтегровано через app/collectors/cert_rss.py (10 записів).",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "CERT-EU (ЄС) — Security Advisories",
+      "country": "EU",
+      "flag": "🇪🇺",
+      "org": "CERT-EU",
+      "url": "https://cert.europa.eu/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://cert.europa.eu/publications/security-advisories-rss",
+      "requires_key": null,
+      "description": "CERT Євросоюзу. RSS Security Advisories працює (10 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "JPCERT/CC (Японія)",
+      "country": "JP",
+      "flag": "🇯🇵",
+      "org": "JPCERT/CC",
+      "url": "https://www.jpcert.or.jp/english/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.jpcert.or.jp/english/rss/jpcert-en.rdf",
+      "requires_key": null,
+      "description": "Японський CERT. RSS працює (записи додаються рідко, поточний фід — 6 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "NCSC-NL Advisories (Нідерланди)",
+      "country": "NL",
+      "flag": "🇳🇱",
+      "org": "NCSC-NL",
+      "url": "https://www.ncsc.nl/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://advisories.ncsc.nl/rss/advisories",
+      "requires_key": null,
+      "description": "Нідерландський NCSC. RSS Advisories працює (25 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "NCSC-FI / Kyberturvallisuuskeskus (Фінляндія)",
+      "country": "FI",
+      "flag": "🇫🇮",
+      "org": "NCSC-FI",
+      "url": "https://www.kyberturvallisuuskeskus.fi/en",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.kyberturvallisuuskeskus.fi/feed/rss/en",
+      "requires_key": null,
+      "description": "Фінський центр кібербезпеки. RSS працює (50 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "CERT.br (Бразилія)",
+      "country": "BR",
+      "flag": "🇧🇷",
+      "org": "CERT.br",
+      "url": "https://www.cert.br/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.cert.br/rss/certbr-rss.xml",
+      "requires_key": null,
+      "description": "Бразильський CERT. RSS працює (12 записів, з них 8 нових). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "CERT.hr / CARNet (Хорватія)",
+      "country": "HR",
+      "flag": "🇭🇷",
+      "org": "CERT.hr",
+      "url": "https://www.cert.hr/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.cert.hr/feed/",
+      "requires_key": null,
+      "description": "Хорватський CERT. RSS працює (10 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "NUKIB (Чехія)",
+      "country": "CZ",
+      "flag": "🇨🇿",
+      "org": "NUKIB",
+      "url": "https://nukib.gov.cz/en/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://nukib.gov.cz/rss.xml",
+      "requires_key": null,
+      "description": "Чеський національний центр кібербезпеки. RSS працює (15 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "DKCERT (Данія)",
+      "country": "DK",
+      "flag": "🇩🇰",
+      "org": "DKCERT",
+      "url": "https://www.cert.dk/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.cert.dk/news/rss",
+      "requires_key": null,
+      "description": "Данський CERT. RSS працює (10 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "CERT-EE / RIA (Естонія)",
+      "country": "EE",
+      "flag": "🇪🇪",
+      "org": "CERT-EE (RIA)",
+      "url": "https://www.ria.ee/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.ria.ee/et/news-feed/all/feed",
+      "requires_key": null,
+      "description": "Естонський CERT. RSS працює (50 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "AusCERT (Австралія)",
+      "country": "AU",
+      "flag": "🇦🇺",
+      "org": "AusCERT",
+      "url": "https://www.auscert.org.au/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://portal.auscert.org.au/rss/bulletins/",
+      "requires_key": null,
+      "description": "Австралійський CERT. RSS bulletins працює (30 записів). Інтегровано через cert_rss.py.",
+      "possible_solution": "Працює. Колектор на основі feedparser, без ключа."
+    },
+    {
+      "name": "CERT-FR Avis",
+      "country": "FR",
+      "flag": "🇫🇷",
+      "org": "CERT-FR / ANSSI",
+      "url": "https://cert.ssi.gouv.fr/avis/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://cert.ssi.gouv.fr/avis/feed/",
+      "requires_key": null,
+      "description": "Французький державний CERT (ANSSI). Стрічка avis (advisories). Перевірено 21.08.2026: HTTP 200.",
+      "possible_solution": "Працює. Колектор cert_rss.py, без ключа."
+    },
+    {
+      "name": "CERT-FR Alertes",
+      "country": "FR",
+      "flag": "🇫🇷",
+      "org": "CERT-FR / ANSSI",
+      "url": "https://cert.ssi.gouv.fr/alerte/",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://cert.ssi.gouv.fr/alerte/feed/",
+      "requires_key": null,
+      "description": "Термінові попередження CERT-FR (alertes). Окрема стрічка від avis; дефолтна серйозність High.",
+      "possible_solution": "Працює. Колектор cert_rss.py, без ключа."
+    },
+    {
+      "name": "CERT-SE",
+      "country": "SE",
+      "flag": "🇸🇪",
+      "org": "CERT-SE (Sweden)",
+      "url": "https://cert.se/",
+      "connection": "RSS (Atom)",
+      "status": "active",
+      "rss": "https://cert.se/feed/",
+      "requires_key": null,
+      "description": "Шведський CERT. Робочий фід — https://cert.se/feed/ (Atom через feeder.co-агрегатор); шлях rss.xml не існує (404).",
+      "possible_solution": "Працює. Колектор cert_rss.py, без ключа."
+    },
+    {
+      "name": "CISA Advisories",
+      "country": "US",
+      "flag": "🇺🇸",
+      "org": "CISA",
+      "url": "https://www.cisa.gov/cybersecurity-advisories",
+      "connection": "RSS",
+      "status": "active",
+      "rss": "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+      "requires_key": null,
+      "description": "Повна стрічка кіберрад CISA (advisories, аналітика, malware). НЕ дублює CISA KEV JSON (cisa_kev.py) — це окремі джерела даних.",
+      "possible_solution": "Працює. Колектор cert_rss.py, без ключа (до 50 записів за запуск)."
+    },
+    {
+      "name": "ENISA (ЄС)",
+      "country": "EU",
+      "flag": "🇪🇺",
+      "org": "ENISA",
+      "url": "https://www.enisa.europa.eu/",
+      "connection": null,
+      "status": "planned",
+      "rss": null,
+      "requires_key": null,
+      "problem": "RSS прибрали при редизайні сайту 2025 року; робочої альтернативної стрічки немає.",
+      "possible_solution": "Моніторити розділ publications вручну або чекати повернення фіду.",
+      "description": "Агентство ЄС з кібербезпеки. Публікує звіти та огляди загроз, але автоматичне підписання зараз неможливе."
+    },
+    {
+      "name": "CERT-GOV-MD (Молдова)",
+      "country": "MD",
+      "flag": "🇲🇩",
+      "org": "STISC / CERT-GOV-MD",
+      "url": "https://stisc.gov.md/",
+      "connection": "HTML-скрапінг (потенційно)",
+      "status": "planned",
+      "rss": null,
+      "requires_key": null,
+      "problem": "Офіційного RSS немає — публікують лише через сайт/Facebook. Знадобиться HTML-скрапер за моделлю SSSCIP/SBU-колекторів, з тими самими ризиками блокувань.",
+      "possible_solution": "HTML-скрапер stisc.gov.md або моніторинг Facebook-сторінки; розглянути Telegram-канал через бота.",
+      "description": "Молдовський державний CERT (CERT-GOV-MD / STISC). Значущий сусідній для України джерело."
+    },
+    {
+      "name": "EG-CERT (Єгипет)",
+      "country": "EG",
+      "flag": "🇪🇬",
+      "org": "EG-CERT",
+      "url": "https://www.egcert.eg/",
+      "connection": "RSS",
+      "status": "needs_setup",
+      "rss": "https://www.egcert.eg/feed/",
+      "requires_key": null,
+      "description": "Єгипетський CERT. Фід валідний, але порожній (0 записів), а у egcert.eg зламаний ланцюг TLS-сертифікатів — колектор звертається з verify=False. Появиться в БД, щойно опублікують записи.",
+      "possible_solution": "Моніторити фід з часом — записів поки немає."
+    },
+    {
+      "name": "Агрегатор: pulsedive/certrss",
+      "info": true,
+      "country": "🌍",
+      "flag": "🌍",
+      "org": "community (Pulsedive)",
+      "url": "https://github.com/pulsedive/certrss",
+      "connection": "Перевірені RSS-фіди державних CERT (список)",
+      "status": "ready",
+      "rss": "https://raw.githubusercontent.com/pulsedive/certrss/main/README.md",
+      "requires_key": null,
+      "description": "Кураторський список робочих RSS-фідів державних CERT по всьому світу (community-maintained, неактивні відфільтровані). Джерело для швидкого додавання нових країн.",
+      "possible_solution": "Використати README-список як конфіг для масового додавання CERT-фідів."
+    },
+    {
+      "name": "Агрегатор: crypto-cypher/CERT-Alerts",
+      "info": true,
+      "country": "🌍",
+      "flag": "🌍",
+      "org": "community",
+      "url": "https://github.com/crypto-cypher/CERT-Alerts",
+      "connection": "Список посилань (HTML, не RSS)",
+      "status": "partial",
+      "rss": null,
+      "requires_key": null,
+      "description": "Curated список національних CERT по всьому світу. Більшість — посилання на HTML-сторінки, RSS-фіди не вказані. Корисно як довідник, але для інтеграції менш зручний, ніж certrss.",
+      "possible_solution": "Використовувати як джерело посилань для ручного додавання конкретних CERT."
+    },
+    {
+      "name": "Додаткові CERT з certrss (інтегровані)",
+      "info": true,
+      "country": "🌍",
+      "flag": "🌍",
+      "org": "різні",
+      "url": "https://cert.europa.eu/",
+      "connection": "RSS (перевірено, працюють)",
+      "status": "active",
+      "rss": null,
+      "requires_key": null,
+      "license": "Урядові джерела — формальної вимоги атрибуції на екрані немає; ввічливо вказувати джерело новини",
+      "description": "Інтегровані через app/collectors/cert_rss.py: JPCERT (JP), NCSC-FI (FI), NCSC-NL advisories, CERT.br (BR), CERT.hr (HR), NUKIB (CZ), DKCERT (DK), CERT-EE (EE), AusCERT bulletins (AU), BSI/CERT-Bund (DE), ACSC Alerts/Advisories (AU), Cisco Talos Intelligence (US). Всі працюють у базі.",
+      "possible_solution": "Працює. Можна додати інші країни з certrss аналогічно."
+    }
+  ],
+  "planned_ua": [
+    {
+      "name": "Держспецзв'язку / SSSCIP",
+      "url": "https://cip.gov.ua/ua/news",
+      "status": "partial",
+      "problem": "Колектор реалізовано (Playwright, app/collectors/ssscip_ua.py), але Akamai EdgeSuite періодично блокує доступ — записів у базі майже немає.",
+      "possible_solution": "Запуск зі стабільної IP, резидентний проксі або офіційний Telegram-канал через бота (TELEGRAM_BOT_TOKEN + TELEGRAM_CHANNELS у .env, колектор app/collectors/telegram_channel.py)."
+    },
+    {
+      "name": "НКЦК при РНБО",
+      "url": "https://rnbo.gov.ua/ua/Novyny/",
+      "status": "partial",
+      "problem": "Колектор реалізовано (app/collectors/rnbo_ua.py), але новини саме кібертематики публікуються рідко — записів у базі немає.",
+      "possible_solution": "Моніторити /ua/Novyny/ і фільтрувати за темами: кібер, штучний інтелект, критична інфраструктура."
+    },
+    {
+      "name": "СБУ / Департамент кібербезпеки",
+      "url": "https://ssu.gov.ua/novyny",
+      "status": "partial",
+      "problem": "Колектор реалізовано (app/collectors/ssu_ua.py), але Access Denied від Akamai EdgeSuite навіть через Playwright у цій мережі.",
+      "possible_solution": "Офіційний Telegram-канал СБУ через бота (TELEGRAM_BOT_TOKEN + TELEGRAM_CHANNELS у .env, колектор app/collectors/telegram_channel.py). Обхід Akamai технічними засобами не передбачено."
+    },
+    {
+      "name": "НБУ — CSIRT-BANK",
+      "url": "https://bank.gov.ua",
+      "status": "planned",
+      "problem": "Є команда кібербезпеки банківського сектора, але публікує нерегулярно та не через відкриту стрічку.",
+      "possible_solution": "Моніторити обидва джерела: (1) розділ безпеки/захисту інформації на bank.gov.ua (https://bank.gov.ua/ua/news/all — доступний, працює через RSS/скрапінг), (2) офіційні повідомлення та прес-релізи НБУ як регулятора банківського сектора. Відкритого RSS-фіду bank.gov.ua немає (перевірено 16.08.2026: /rss, /feed, /ua/rss, /ua/news/rss — усі 404)."
+    }
+  ],
+  "phishing_sources": [
+    {
+      "name": "PhishTank",
+      "db_table": "phishing_urls",
+      "url": "https://data.phishtank.com/data/online-valid.csv",
+      "status": "active",
+      "license": "Data provided by PhishTank (free redistribution with attribution)",
+      "type": "CSV dump (community-driven база фішингових URL)",
+      "freshness": "Оновлюється кожні ~1 год",
+      "docs": "https://www.phishtank.com/developer_info.php",
+      "api_key_env": null,
+      "api_key_url": null,
+      "description": "Community-driven база фішингових URL. Безкоштовний CSV dump без API-ключа (rate limit нижчий). Для API з вищим лімітом: реєстрація на phishtank.com."
+    },
+    {
+      "name": "OpenPhish",
+      "db_table": "phishing_urls",
+      "url": "https://openphish.com/feed.txt",
+      "status": "active",
+      "license": "Data by OpenPhish (free feed with attribution)",
+      "type": "Text feed (простий текстовий список URL)",
+      "freshness": "Оновлюється кожні ~5 хв",
+      "docs": "https://openphish.com/",
+      "api_key_env": null,
+      "api_key_url": null,
+      "description": "Автоматизований сервіс моніторингу фішингу. Безкоштовний фід без API-ключа. Платний Premium — JSON API з деталями по кампаніях."
+    },
+    {
+      "name": "PhishStats",
+      "db_table": "phishing_urls",
+      "url": "https://phishstats.info/phish_score.csv",
+      "status": "active",
+      "license": "PhishStats (attribution required)",
+      "type": "CSV/JSON API (фішингові індикатори)",
+      "freshness": "Оновлюється регулярно",
+      "docs": "https://phishstats.info/",
+      "api_key_env": null,
+      "api_key_url": null,
+      "description": "Відкритий API з фішинговими індикаторами. Без API-ключа, є rate limit."
+    },
+    {
+      "name": "Google Safe Browsing",
+      "db_table": "threats",
+      "url": "https://safebrowsing.googleapis.com/v4/threatMatches:find",
+      "status": "planned",
+      "license": "Google API ToS",
+      "type": "JSON API (перевірка URL на фішинг/малварь)",
+      "freshness": "Realtime lookup",
+      "docs": "https://developers.google.com/safe-browsing",
+      "api_key_env": "GOOGLE_SAFE_BROWSING_KEY",
+      "api_key_url": "https://console.cloud.google.com/apis/credentials",
+      "api_key_instructions": "1) Створіть GCP project (console.cloud.google.com) 2) Увімкніть Safe Browsing API (console.cloud.google.com/apis/library/safebrowsing.googleapis.com) 3) Створіть API key (Credentials → Create Credentials → API key) 4) Безкоштовний тариф: 10 000 запитів/день",
+      "description": "Lookup-сервіс для перевірки URL на фішинг/малварь (не фід для масового збору). Потрібен GCP API-ключ."
+    }
+  ],
+  "leak_sources": [
+    {
+      "name": "Have I Been Pwned (HIBP)",
+      "db_table": "threats",
+      "url": "https://haveibeenpwned.com/api/v3/breaches",
+      "status": "active",
+      "license": "HIBP ToS (free tier для breaches list)",
+      "type": "JSON API v3 (список витоків)",
+      "freshness": "Постійно оновлюється",
+      "docs": "https://haveibeenpwned.com/API/v3",
+      "api_key_env": "HIBP_API_KEY",
+      "api_key_url": "https://haveibeenpwned.com/API/Key",
+      "api_key_instructions": "1) Перейдіть на haveibeenpwned.com/API/Key 2) Підпишіться ($3.50/місяць) 3) Отримайте API-ключ. Без ключа: список breaches працює, пошук по email — ні.",
+      "description": "Витоки даних: список усіх відомих витоків (без ключа), пошук по email/domenu (платний ключ)."
+    },
+    {
+      "name": "Intelligence X",
+      "db_table": "threats",
+      "url": "https://2.intelx.io/",
+      "status": "planned",
+      "license": "IntelX ToS (free tier з лімітами)",
+      "type": "JSON API (пошук по утечкам, даркнету, пастам)",
+      "freshness": "Realtime",
+      "docs": "https://intelx.io/intelligence",
+      "api_key_env": "INTELX_API_KEY",
+      "api_key_url": "https://intelx.io/",
+      "api_key_instructions": "1) Зареєструйтесь на intelx.io 2) Перейдіть в Settings → API 3) Отримайте API-ключ (free tier з лімітами)",
+      "description": "Пошук по утечках, даркнету, пастам,暗网. Free tier з лімітами."
+    }
+  ],
+  "ddos_sources": [
+    {
+      "name": "Qrator Labs",
+      "db_table": null,
+      "url": "https://blog.qrator.net/",
+      "status": "monitoring_only",
+      "license": "Комерційний (публічний тільки блог)",
+      "type": "RSS блог (моніторинг публікацій)",
+      "freshness": "Нерегулярно",
+      "docs": "https://blog.qrator.net/",
+      "description": "Актуально для України/СНГ. Публічного API немає — тільки блог/звіти. Радар-статистика частково доступна через комерційний доступ."
+    },
+    {
+      "name": "DDoSMon (Qihoo 360 Netlab)",
+      "db_table": null,
+      "url": "https://ddosmon.net/",
+      "status": "monitoring_only",
+      "license": "Публічний веб-дашборд",
+      "type": "Веб-дашборд (немає офіційного API)",
+      "freshness": "Realtime (дашборд)",
+      "docs": "https://ddosmon.net/",
+      "description": "Відкрита карта DDoS в реальному часу. Офіційного API немає, можливий лише скрапінг (нестабільно, може блокувати)."
+    },
+    {
+      "name": "NETSCOUT ATLAS / Radware",
+      "db_table": null,
+      "url": "https://www.netscout.com/threatreport",
+      "status": "monitoring_only",
+      "license": "Комерційні звіти",
+      "type": "RSS блог / PDF звіти",
+      "freshness": "Щоквартально",
+      "docs": "https://www.netscout.com/threatreport",
+      "description": "Частина даних публічна у вигляді звітів/блогів. RSS для моніторингу публікацій."
+    },
+    {
+      "name": "Cloudflare DDoS",
+      "db_table": "threats",
+      "url": "https://blog.cloudflare.com/tag/ddos/",
+      "status": "active",
+      "license": "Cloudflare (публічний блог)",
+      "type": "RSS (тег DDoS)",
+      "freshness": "Регулярно (щоквартальні DDoS Threat Reports + анонси)",
+      "docs": "https://blog.cloudflare.com/tag/ddos/",
+      "description": "Новинний шар DDoS-моніторингу: звіти Cloudflare DDoS Threat Report (по кварталах/півріччях), рекордні Tbps-атаки, DNS-флуди, геополітичні кампанії. Інтегровано через app/collectors/ddos_news.py (фіди без ключів)."
+    },
+    {
+      "name": "Cloudflare Attacks",
+      "db_table": "threats",
+      "url": "https://blog.cloudflare.com/tag/attacks/",
+      "status": "active",
+      "license": "Cloudflare (публічний блог)",
+      "type": "RSS (тег Attacks)",
+      "freshness": "Регулярно",
+      "docs": "https://blog.cloudflare.com/tag/attacks/",
+      "description": "Анонси конкретних DDoS-атак та їх пом'якшення (HTTP/2 Rapid Reset, рекордні обсяги). Інтегровано через app/collectors/ddos_news.py."
+    },
+    {
+      "name": "Cloudflare Botnet",
+      "db_table": "threats",
+      "url": "https://blog.cloudflare.com/tag/botnet/",
+      "status": "active",
+      "license": "Cloudflare (публічний блог)",
+      "type": "RSS (тег Botnet)",
+      "freshness": "Регулярно",
+      "docs": "https://blog.cloudflare.com/tag/botnet/",
+      "description": "Ботнет-інфраструктура, що генерує DDoS-трафік (Mirai/Mantis, безкоштовний Botnet Threat Feed). Інтегровано через app/collectors/ddos_news.py."
+    }
+  ],
+  "apt_sources": [
+    {
+      "name": "MITRE ATT&CK CTI",
+      "db_table": "threats",
+      "url": "https://github.com/mitre/cti",
+      "status": "active",
+      "license": "Apache 2.0 (MITRE Corporation)",
+      "type": "JSON (STIX 2.1, intrusion-set)",
+      "freshness": "Оновлюється комітами на GitHub",
+      "docs": "https://attack.mitre.org/",
+      "api_key_env": null,
+      "api_key_url": null,
+      "description": "Офіційний GitHub-репозиторій MITRE ATT&CK. Весь ландшафт APT-груп у форматі STIX 2.1. Немає rate limit — завантажується через raw.githubusercontent.com."
+    },
+    {
+      "name": "MISP Galaxy (Threat Actor)",
+      "db_table": "threats",
+      "url": "https://github.com/MISP/misp-galaxy",
+      "status": "active",
+      "license": "Apache 2.0 (MISP Project)",
+      "type": "JSON (MISP Galaxy cluster format)",
+      "freshness": "Оновлюється комітами на GitHub",
+      "docs": "https://www.misp-project.org/galaxy/",
+      "api_key_env": null,
+      "api_key_url": null,
+      "description": "Структуровані дані про APT-групи: псевдоніми, країни, зв'язки. Файл clusters/threat-actor.json."
+    }
+  ],
+  "ioc_sources": [
+    {
+      "name": "VirusTotal Intelligence",
+      "db_table": "threats",
+      "url": "https://www.virustotal.com/api/v3/",
+      "status": "active",
+      "license": "VirusTotal ToS (free tier: 4 req/min, 500/day)",
+      "type": "JSON API v3 (URL + file IoC)",
+      "freshness": "Realtime",
+      "docs": "https://docs.virustotal.com/reference/overview",
+      "api_key_env": "VIRUSTOTAL_API_KEY",
+      "api_key_url": "https://www.virustotal.com/gui/my-apikey",
+      "api_key_instructions": "1) Зареєструйтесь на virustotal.com 2) Перейдіть в My API Key (gui/my-apikey) 3) Скопіюйте ключ. Безкоштовний тариф: 4 запити/хв, 500 запитів/день.",
+      "description": "Не тільки файли, але й URL та IoC. Кожен запит повертає кількість детекцій з 70+ антивірусних движків."
+    },
+    {
+      "name": "Shodan",
+      "db_table": "threats",
+      "url": "https://api.shodan.io/",
+      "status": "active",
+      "license": "Shodan ToS (free tier: 100 req/month)",
+      "type": "JSON API (хости, сервіси, вразливості)",
+      "freshness": "Realtime",
+      "docs": "https://shodan.readthedocs.io/",
+      "api_key_env": "SHODAN_API_KEY",
+      "api_key_url": "https://account.shodan.io/",
+      "api_key_instructions": "1) Зареєструйтесь на shodan.io 2) Перейдіть в Account → API Key 3) Скопіюйте ключ. Free tier: 1 запит/сек, 100 запитів/місяць.",
+      "description": "Пошук по хостах/сервісах: відкриті порти, C2-інфраструктура, вразливі сервіси. Не джерело інцидентів, а контекст для IoC."
+    }
+  ],
+  "ml_datasets": [
+    {
+      "name": "CAIDA DDoS Attack 2007",
+      "db_table": "dataset_snapshots",
+      "url": "https://www.caida.org/catalog/datasets/ddos-20070804_dataset/",
+      "status": "active",
+      "license": "Публічне завантаження (з серпня 2025 — без попереднього запиту)",
+      "type": "PCAP: ~1 год анонімізованого трафіку реальної DDoS-атаки",
+      "freshness": "Історичний (2007), еталонний",
+      "docs": "https://www.caida.org/catalog/datasets/ddos-20070804_dataset/",
+      "description": "Еталонний датасет реальної DDoS-атаки. Раніше вимагав заявку, з серпня 2025 — публічне скачування. Для ML: оцінка детекторів на реальному трафіку."
+    },
+    {
+      "name": "CIC-DDoS2019 / CICEV2023 (UNB)",
+      "db_table": "dataset_snapshots",
+      "url": "https://www.unb.ca/cic/datasets/ddos-2019.html",
+      "status": "active",
+      "license": "Вільне розповсюдження з цитуванням",
+      "type": "Розмічені PCAP + CSV (80+ флоу-фіч); CICEV2023 — DDoS на EV-зарядки",
+      "freshness": "2019 (UNB продовжує випускати нові датасети IoT/IIoT)",
+      "docs": "https://www.unb.ca/cic/datasets/electric-vehicle-ddos-2023.html",
+      "description": "Канонічний датасет DDoS з розміткою за сімействами атак (NTP, DNS, LDAP, MSSQL, SYN, UDP та ін.). Для ML: класифікація сімейств, навчання детекторів."
+    },
+    {
+      "name": "BCCC-cPacket-Cloud-DDoS-2024",
+      "db_table": "dataset_snapshots",
+      "url": "https://www.yorku.ca/research/bccc/ucs-technical/cybersecurity-datasets-cds/",
+      "status": "active",
+      "license": "Відкритий академічний (MDPI)",
+      "type": "Розмічені флоу (26 міток, 300+ фіч), хмарна інфраструктура",
+      "freshness": "2024, актуальний",
+      "docs": "https://www.mdpi.com/2078-2489/15/4/195",
+      "description": "Хмарний DDoS-датасет: 8+ сценаріїв легальної активності та 17 сценаріїв атак, 300+ фіч через NTLFlowLyzer. Для ML: детекція атак у хмарі, класифікація трафіку."
+    },
+    {
+      "name": "AISED (Zenodo)",
+      "db_table": "dataset_snapshots",
+      "url": "https://zenodo.org/records/14681803",
+      "status": "active",
+      "license": "Creative Commons Attribution",
+      "type": "CSV, очищений для ML (52 318 записів, 79 фіч)",
+      "freshness": "2025",
+      "docs": "https://doi.org/10.5281/zenodo.14681803",
+      "description": "Комбінований/очищений хмарний DDoS-датасет, готовий до ML без попередньої обробки (збалансовані класи BENIGN/DDOS)."
+    },
+    {
+      "name": "MAWILab",
+      "db_table": "dataset_snapshots",
+      "url": "http://www.fukuda-lab.org/mawilab/",
+      "status": "active",
+      "license": "Академічне використання, обов'язкове посилання",
+      "type": "Мітки аномалій (включно з DDoS) у трафіку MAWI (admd/CSV)",
+      "freshness": "Архів 2006–2024 (збір міток припинено у грудні 2024)",
+      "docs": "https://mawi.wide.ad.jp/",
+      "description": "Еталонні мітки аномалій у трафіку WIDE/MAWI. Важливо: операцію MAWILab припинено у грудні 2024 — «оновлюється щодня» у публікаціях застаріло; архів лишається корисним для оцінки методів виявлення аномалій."
+    }
+  ]
+}

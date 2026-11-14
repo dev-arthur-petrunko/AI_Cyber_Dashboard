@@ -1,0 +1,15 @@
+{
+  "external_id": "PT-2024-00123",
+  "source": "PhishTank",
+  "url": "http://evil.example.com/login",
+  "target_brand": "ExampleBank",
+  "host": "evil.example.com",
+  "domain": "example.com",
+  "verified": "verified",
+  "status": "online",
+  "target_country": ["UA"],
+  "tags": ["phishing", "banking"],
+  "first_seen": "2024-03-15T08:00:00",
+  "last_seen": "2024-03-15T08:00:00",
+  "fetched_at": "2024-03-15T09:00:00"
+}

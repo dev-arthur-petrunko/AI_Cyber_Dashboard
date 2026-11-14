@@ -1,0 +1,418 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Threat, Explanation } from "@/lib/types";
+import { SeverityBadge, ExploitMaturityBadge } from "./SeverityBadge";
+import { useTranslation } from "./LanguageContext";
+import { Translations, Language } from "@/lib/i18n";
+import { parseApiDate } from "@/lib/dates";
+
+type TranslationDict = Translations[Language];
+
+const SEVERITY_BAR: Record<string, string> = {
+  Critical: "bg-critical",
+  High: "bg-warning",
+  Medium: "bg-border-strong",
+  Low: "bg-border",
+  Unknown: "bg-border",
+};
+
+const SEVERITY_GLOW: Record<string, string> = {
+  Critical: "shadow-[0_0_8px_rgba(255,255,255,0.45)]",
+  High: "shadow-[0_0_6px_rgba(255,255,255,0.28)]",
+  Medium: "",
+  Low: "",
+  Unknown: "",
+};
+
+function timeAgo(iso: string, t: TranslationDict): string {
+  const diffMs = Date.now() - (parseApiDate(iso)?.getTime() ?? Date.now());
+  const m = Math.floor(diffMs / 60000);
+  if (m < 1) return t.time.lessThanHour;
+  if (m < 60) return `${m}${t.time.minute ?? "хв"}`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}${t.time.hour}`;
+  return `${Math.floor(h / 24)}${t.time.day}`;
+}
+
+async function fetchExplanation(threatId: number): Promise<Explanation | null> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const resp = await fetch(`${apiUrl}/threats/${threatId}/explain`, { signal: controller.signal });
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+export function ThreatTable({ threats }: { threats: Threat[] }) {
+  const { t } = useTranslation();
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [explanations, setExplanations] = useState<Record<number, Explanation>>({});
+  const [loadingId, setLoadingId] = useState<number | null>(null);
+
+  const toggleExpand = async (threatId: number) => {
+    if (expandedId === threatId) {
+      setExpandedId(null);
+      return;
+    }
+    setExpandedId(threatId);
+    
+    // Fetch explanation if not already loaded
+    if (!explanations[threatId]) {
+      setLoadingId(threatId);
+      const explanation = await fetchExplanation(threatId);
+      if (explanation) {
+        setExplanations(prev => ({ ...prev, [threatId]: explanation }));
+      }
+      setLoadingId(null);
+    }
+  };
+
+  if (threats.length === 0) {
+    return (
+      <div className="glass-card rounded-xl border border-border p-8 text-center shadow-sm">
+        <p className="text-sm text-text-secondary">{t.sections.noThreats}</p>
+        <p className="mt-1 text-xs text-text-muted">{t.sections.tryFilter}</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {/* Mobile: stacked threat cards */}
+      <div className="space-y-2 md:hidden">
+        {threats.map((threat, i) => (
+          <MobileThreatCard
+            key={threat.id}
+            threat={threat}
+            index={i}
+            isExpanded={expandedId === threat.id}
+            explanation={explanations[threat.id]}
+            isLoading={loadingId === threat.id}
+            onToggle={() => toggleExpand(threat.id)}
+            t={t}
+          />
+        ))}
+      </div>
+
+      {/* Tablet & desktop: scrollable table */}
+      <div className="hidden overflow-hidden rounded-xl border border-border shadow-sm md:block">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px] border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-border bg-panel-raised text-left text-[10px] uppercase tracking-wide text-text-muted sm:text-xs">
+              <th className="w-1" />
+              <th className="px-2 py-2.5 font-semibold sm:px-4 sm:py-3">{t.table.source}</th>
+              <th className="px-2 py-2.5 font-semibold sm:px-4 sm:py-3">{t.table.threat}</th>
+              <th className="hidden px-4 py-3 font-semibold lg:table-cell">{t.table.vendor}</th>
+              <th className="px-2 py-2.5 font-semibold sm:px-4 sm:py-3">{t.table.severity}</th>
+              <th className="px-2 py-2.5 font-semibold sm:px-4 sm:py-3">{t.table.cvss}</th>
+              <th className="px-2 py-2.5 font-semibold sm:px-4 sm:py-3">{t.table.status}</th>
+              <th className="px-2 py-2.5 text-right font-semibold sm:px-4 sm:py-3">{t.table.when}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {threats.map((threat, i) => (
+              <ThreatRow
+                key={threat.id}
+                threat={threat}
+                index={i}
+                isExpanded={expandedId === threat.id}
+                explanation={explanations[threat.id]}
+                isLoading={loadingId === threat.id}
+                onToggle={() => toggleExpand(threat.id)}
+                t={t}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </>
+  );
+}
+
+function ThreatRow({
+  threat,
+  index,
+  isExpanded,
+  explanation,
+  isLoading,
+  onToggle,
+  t,
+}: {
+  threat: Threat;
+  index: number;
+  isExpanded: boolean;
+  explanation?: Explanation;
+  isLoading: boolean;
+  onToggle: () => void;
+  t: TranslationDict;
+}) {
+  return (
+    <>
+      <tr
+        onClick={onToggle}
+        className="animate-slide-in-right group relative cursor-pointer border-b border-border bg-panel last:border-0 transition-colors duration-200 hover:bg-panel-raised"
+        style={{ animationDelay: `${Math.min(index * 40, 800)}ms` }}
+      >
+        <td className={`w-1 transition-all duration-200 group-hover:w-1.5 ${SEVERITY_BAR[threat.severity]} ${SEVERITY_GLOW[threat.severity]}`} />
+        <td className="whitespace-nowrap px-2 py-2.5 font-mono text-[10px] font-medium text-text-secondary sm:px-4 sm:py-3 sm:text-xs">{threat.source}</td>
+        <td className="max-w-[180px] px-2 py-2.5 sm:max-w-md sm:px-4 sm:py-3">
+          <div className="flex items-start gap-2">
+            <svg
+              className={`mt-0.5 h-4 w-4 flex-shrink-0 text-text-muted transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <div className="min-w-0 flex-1">
+              <span className="block truncate font-medium text-text-primary transition-colors group-hover:text-signal" title={threat.title}>
+                {threat.title}
+              </span>
+              {threat.cve_id && (
+                <Link
+                  href={`/timeline/${threat.cve_id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-1 inline-flex items-center gap-1 rounded-md bg-signal/10 px-1.5 py-0.5 font-mono text-[10px] text-signal transition-colors hover:bg-signal/20 sm:text-xs"
+                  title={t.table.showTimeline}
+                >
+                  {threat.cve_id}
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </Link>
+              )}
+            </div>
+          </div>
+        </td>
+        <td className="hidden whitespace-nowrap px-4 py-3 text-text-secondary lg:table-cell">
+          {threat.vendor ?? threat.vendor_local ? (
+            <span title={threat.vendor ? undefined : t.table.vendorFromTitle}>
+              {threat.vendor ?? threat.vendor_local}
+              {threat.vendor ? null : <span className="ml-0.5 text-text-muted">*</span>}
+            </span>
+          ) : (
+            "—"
+          )}
+        </td>
+        <td className="whitespace-nowrap px-2 py-2.5 sm:px-4 sm:py-3">
+          <SeverityBadge severity={threat.severity} />
+        </td>
+        <td className="whitespace-nowrap px-2 py-2.5 font-mono text-[10px] text-text-secondary sm:px-4 sm:py-3 sm:text-xs">
+          {threat.cvss_score != null ? (
+            <span className="inline-flex items-center gap-1 rounded-md bg-signal/10 px-1.5 py-0.5 font-mono font-bold text-signal">
+              CVSS {threat.cvss_score.toFixed(1)}
+            </span>
+          ) : threat.local_score != null ? (
+            <span
+              className={`inline-flex cursor-help items-center gap-1 rounded-md border border-border bg-panel-raised px-1.5 py-0.5 font-mono text-text-muted ${threat.local_score >= 9 ? "font-bold text-critical" : ""}`}
+              title={[
+                t.table.localScoreTooltip,
+                threat.epss_score != null && threat.fetched_at
+                  ? `EPSS: ${t.table.epssUpdated || "оновлено"} ${parseApiDate(threat.fetched_at)?.toLocaleDateString() ?? "—"}`
+                  : "",
+              ].filter(Boolean).join("\n")}
+            >
+              {threat.local_score.toFixed(1)}
+              <span className="text-[9px] opacity-60">{t.table.localScoreInternal}</span>
+            </span>
+          ) : (
+            "—"
+          )}
+        </td>
+        <td className="whitespace-nowrap px-2 py-2.5 sm:px-4 sm:py-3">
+          <ExploitMaturityBadge maturity={threat.exploit_maturity} />
+        </td>
+        <td className="whitespace-nowrap px-2 py-2.5 text-right text-[10px] text-text-muted sm:px-4 sm:py-3 sm:text-xs">
+          {timeAgo(threat.published, t)}
+        </td>
+      </tr>
+      
+      {/* Expanded explanation row */}
+      {isExpanded && (
+        <tr className="border-b border-border bg-panel-raised border-l-2 border-l-signal/50">
+          <td colSpan={8} className="px-4 py-4 sm:px-6">
+            {isLoading ? (
+              <div className="flex items-center gap-3 text-sm text-text-muted">
+                <div className="h-4 w-4 spinner-glow" />
+                <span>{t.explain?.loading || "Завантаження..."}</span>
+              </div>
+            ) : explanation ? (
+              <ExplanationContent explanation={explanation} threat={threat} t={t} />
+            ) : (
+              <p className="text-sm text-text-muted">{t.explain?.error || "Не вдалося завантажити пояснення"}</p>
+            )}
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+function MobileThreatCard({
+  threat,
+  index,
+  isExpanded,
+  explanation,
+  isLoading,
+  onToggle,
+  t,
+}: {
+  threat: Threat;
+  index: number;
+  isExpanded: boolean;
+  explanation?: Explanation;
+  isLoading: boolean;
+  onToggle: () => void;
+  t: TranslationDict;
+}) {
+  return (
+    <div
+      onClick={onToggle}
+      className="animate-slide-in-right cursor-pointer rounded-xl border border-border bg-panel p-3 shadow-sm transition-[transform,background-color,border-color] duration-200 active:scale-[0.99]"
+      style={{ animationDelay: `${Math.min(index * 40, 800)}ms` }}
+    >
+      <div className={`mb-2.5 h-1 w-8 rounded-full ${SEVERITY_BAR[threat.severity]} ${SEVERITY_GLOW[threat.severity]}`} />
+
+      <div className="flex items-center justify-between gap-2">
+        <span className="truncate font-mono text-[10px] font-medium text-text-secondary">{threat.source}</span>
+        {threat.vendor && (
+          <span className="hidden flex-shrink-0 truncate rounded border border-border bg-panel-raised px-1.5 py-0.5 font-mono text-[10px] text-text-secondary sm:inline-block">
+            {threat.vendor}
+          </span>
+        )}
+        <span className="flex flex-shrink-0 items-center gap-1.5">
+          <SeverityBadge severity={threat.severity} />
+          <span className="font-mono text-xs text-text-secondary">
+            {threat.cvss_score != null ? (
+              <span className="inline-flex items-center gap-1 rounded-md bg-signal/10 px-1.5 py-0.5 font-mono font-bold text-signal">
+                CVSS {threat.cvss_score.toFixed(1)}
+              </span>
+            ) : threat.local_score != null ? (
+              <span title={t.table.localScoreTooltip} className="inline-flex items-center gap-1 rounded-md border border-border bg-panel-raised px-1.5 py-0.5 font-mono text-text-muted">
+                {threat.local_score.toFixed(1)}
+                <span className="text-[9px] opacity-60">{t.table.localScoreInternal}</span>
+              </span>
+            ) : (
+              "—"
+            )}
+          </span>
+        </span>
+      </div>
+
+      <p className="mt-2 text-sm font-medium leading-snug text-text-primary" title={threat.title}>
+        {threat.title}
+      </p>
+
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        {threat.cve_id && (
+          <Link
+            href={`/timeline/${threat.cve_id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1 rounded-md bg-signal/10 px-1.5 py-0.5 font-mono text-[10px] text-signal transition-colors hover:bg-signal/20"
+            title={t.table.showTimeline}
+          >
+            {threat.cve_id}
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </Link>
+        )}
+        <ExploitMaturityBadge maturity={threat.exploit_maturity} />
+        <span className="ml-auto font-mono text-[10px] text-text-muted">{timeAgo(threat.published, t)}</span>
+      </div>
+
+      {isExpanded && (
+        <div className="mt-3 border-t border-signal/30 pt-3">
+          {isLoading ? (
+            <div className="flex items-center gap-3 text-sm text-text-muted">
+              <div className="h-4 w-4 spinner-glow" />
+              <span>{t.explain?.loading || "Завантаження..."}</span>
+            </div>
+          ) : explanation ? (
+            <ExplanationContent explanation={explanation} threat={threat} t={t} />
+          ) : (
+            <p className="text-sm text-text-muted">{t.explain?.error || "Не вдалося завантажити пояснення"}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ExplanationContent({ explanation, threat, t }: { explanation: Explanation; threat: Threat; t: TranslationDict }) {
+  const explainLabels = t.explain || {};
+  
+  return (
+    <div className="animate-fade-in space-y-4">
+      {/* Explanation */}
+      <div>
+        <h4 className="mb-1.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+          <svg className="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {explainLabels.whatIs || "Що це?"}
+        </h4>
+        <p className="text-sm leading-relaxed text-text-secondary">{explanation.explanation}</p>
+      </div>
+
+      {/* Risk */}
+      <div>
+        <h4 className="mb-1.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+          <svg className="h-4 w-4 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          {explainLabels.risk || "Ризик"}
+        </h4>
+        <p className="text-sm leading-relaxed text-text-secondary">{explanation.risk}</p>
+      </div>
+
+      {/* Recommendations */}
+      <div>
+        <h4 className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+          <svg className="h-4 w-4 text-signal" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {explainLabels.recommendations || "Рекомендації"}
+        </h4>
+        <ul className="space-y-1.5">
+          {explanation.recommendations.map((rec, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-signal/60" />
+              <span>{rec}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Link to original */}
+      {threat.url && (
+        <div className="pt-2">
+          <a
+            href={threat.url}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-panel px-3 py-1.5 text-xs font-medium text-text-secondary transition-all hover:border-signal/40 hover:text-signal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            {explainLabels.viewSource || "Переглянути джерело"}
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}

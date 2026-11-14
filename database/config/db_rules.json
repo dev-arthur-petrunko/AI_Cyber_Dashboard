@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "description": "Машиночитаемые правила работы с базой угроз Cyber Sentinel. Зафиксированы в папке базаданных/config/. Не изменяют поведение кода напрямую, служат справочником.",
+  "dedup": {
+    "primary_key": ["source", "external_id"],
+    "unique_constraint_name": "uq_source_external_id",
+    "table": "threats",
+    "in_batch_dedup": true,
+    "invalid_skip": "external_id пустой",
+    "backfill_protection": {
+      "field": "published",
+      "condition": "new.is_backfill == True",
+      "behavior": "сохранить существующее published, не перезаписывать"
+    },
+    "merge": {
+      "fetched_at": "всегда текущее время импорта",
+      "is_backfill": "True, если хотя бы одна сторона backfill",
+      "optional_signal": "content_hash (SHA-256 title+url+cve_id, не первичный ключ)"
+    }
+  },
+  "tables": {
+    "threats": {
+      "model": "ThreatORM",
+      "storage": "app.storage.bulk.bulk_upsert",
+      "dedup": "upsert по (source, external_id)",
+      "purpose": "Единая таблица нормализованных угроз (CVE/advisory/news/exploit/IOC)"
+    },
+    "phishing_urls": {
+      "model": "PhishingURLORM",
+      "storage": "app.storage.phishing_storage.bulk_upsert_phishing",
+      "dedup": "upsert по (source, external_id)",
+      "purpose": "Фишинговые URL (PhishTank, OpenPhish, PhishStats)"
+    },
+    "ddos_snapshots": {
+      "model": "DdosSnapshotORM",
+      "storage": "app.storage.ddos_storage.save_snapshot / save_snapshots",
+      "dedup": "отсутствует (временные срезы)",
+      "purpose": "DDoS-статистика Cloudflare Radar (временные срезы для истории)"
+    },
+    "dataset_snapshots": {
+      "model": "DatasetSnapshotORM",
+      "storage": "app.collectors.datasets.collect_datasets",
+      "dedup": "отсутствует (временные срезы)",
+      "purpose": "Каталог ML-датасетов DDoS-аналитики"
+    }
+  },
+  "indexes": {
+    "threats": [
+      "ix_threats_source (source)",
+      "ix_threats_external_id (external_id)",
+      "ix_threats_published (published)",
+      "ix_threats_severity (severity)",
+      "ix_threats_type (type)",
+      "ix_threats_region (region)",
+      "ix_threats_exploit_maturity (exploit_maturity)",
+      "ix_threats_is_backfill (is_backfill)",
+      "ix_threats_cve_id (cve_id)",
+      "uq_source_external_id (source, external_id) — уникальный"
+    ],
+    "phishing_urls": [
+      "ix_phishing_domain_brand (domain, target_brand)",
+      "ix_phishing_source_fetched (source, fetched_at)"
+    ],
+    "ddos_snapshots": [
+      "ix_ddos_snapshots_captured_at (captured_at)",
+      "ix_ddos_snapshots_scope (scope)",
+      "ix_ddos_snapshots_metric_type (metric_type)",
+      "ix_ddos_snapshots_scope_metric (scope, metric_type)"
+    ],
+    "dataset_snapshots": [
+      "ix_dataset_snapshots_name (dataset_name)",
+      "ix_dataset_snapshots_captured_at (captured_at)"
+    ]
+  },
+  "migration": {
+    "tool": "Alembic",
+    "location": "migrations/",
+    "current_head": "0003_threat_is_backfill",
+    "note": "Схемы не дублируются здесь — только документируются. Реальные изменения схемы через alembic revisions."
+  }
+}

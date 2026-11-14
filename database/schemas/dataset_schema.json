@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DatasetSnapshotRecord",
+  "description": "Снимок каталога ML-датасетов DDoS-аналитики. Соответствует DatasetSnapshotORM в app/models/dataset_snapshot.py.",
+  "type": "object",
+  "required": ["dataset_name", "category", "license", "source_url", "payload", "captured_at"],
+  "properties": {
+    "dataset_name": {
+      "type": "string",
+      "description": "Название датасета"
+    },
+    "category": {
+      "type": "string",
+      "default": "ddos_ml",
+      "description": "Категория датасета"
+    },
+    "license": {
+      "type": "string",
+      "description": "Лицензия датасета"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Ссылка на источник датасета"
+    },
+    "docs_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Ссылка на документацию"
+    },
+    "freshness": {
+      "type": ["string", "null"],
+      "description": "Актуальность датасета"
+    },
+    "record_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Количество записей в датасете (если известно)"
+    },
+    "last_checked": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время последней проверки"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Метаданные датасета (свободная структура JSON)"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Момент захвата снимка"
+    }
+  },
+  "additionalProperties": false
+}

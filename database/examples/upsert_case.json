@@ -1,0 +1,26 @@
+{
+  "scenario": "Повторный сбор того же CVE из NVD",
+  "existing": {
+    "external_id": "CVE-2024-12345",
+    "source": "NVD",
+    "published": "2024-03-15T10:00:00",
+    "severity": "Critical",
+    "is_backfill": false
+  },
+  "new": {
+    "external_id": "CVE-2024-12345",
+    "source": "NVD",
+    "published": "2024-03-15T10:00:00",
+    "severity": "High",
+    "is_backfill": false
+  },
+  "result": {
+    "external_id": "CVE-2024-12345",
+    "source": "NVD",
+    "published": "2024-03-15T10:00:00",
+    "severity": "High",
+    "fetched_at": "новое время импорта",
+    "is_backfill": false
+  },
+  "note": "Запись обновлена, не дублирована. severity перезаписан на новый."
+}

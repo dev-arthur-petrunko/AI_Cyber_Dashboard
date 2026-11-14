@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ThreatRecord",
+  "description": "Нормализованная запись угрозы из любого источника (CVE, advisory, news, exploit, IOC). Соответствует pydantic-модели Threat в app/models/threat.py и ORM ThreatORM в app/db.py.",
+  "type": "object",
+  "required": ["external_id", "source", "type", "severity", "published"],
+  "properties": {
+    "external_id": {
+      "type": "string",
+      "description": "Уникальный ID в источнике (CVE-YYYY-NNNN, hash URL, ID календаря и т.п.). Часть первичного ключа дедупликации (source, external_id).",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "description": "Название источника (NVD, CISA KEV, CERT-UA, GitHub, BleepingComputer и т.п.).",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": ["CVE", "Advisory", "News", "Exploit", "IOC"],
+      "description": "Тип угрозы (см. taxonomy/threat_types.md)"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["Critical", "High", "Medium", "Low", "Unknown"],
+      "description": "Уровень опасности (см. taxonomy/severity.md)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Заголовок угрозы",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "description": "Краткое описание угрозы",
+      "default": ""
+    },
+    "country": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Список стран (ISO2 или полные названия), привязанных к угрозе",
+      "default": []
+    },
+    "region": {
+      "type": "string",
+      "enum": ["UA", "World"],
+      "description": "Регион для переключателя «Украина / Світ»",
+      "default": "World"
+    },
+    "vendor": {
+      "type": ["string", "null"],
+      "description": "Название вендора (если известен)"
+    },
+    "products": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Затронутые продукты",
+      "default": []
+    },
+    "cvss_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 10,
+      "description": "CVSS оценка"
+    },
+    "epss_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "EPSS вероятность эксплуатации в ближайшие 30 дней"
+    },
+    "exploit_maturity": {
+      "type": "string",
+      "enum": ["PoC", "Weaponized", "In the wild", "Unknown"],
+      "description": "Зрелость эксплойта (см. taxonomy/threat_types.md)",
+      "default": "Unknown"
+    },
+    "published": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Дата публикации в источнике (UTC, naive). Для is_backfill подставляется now() fallback."
+    },
+    "fetched_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Операционная метка времени сбора (UTC, naive). Обновляется при каждом успешном импорте."
+    },
+    "is_backfill": {
+      "type": "boolean",
+      "description": "Технический импорт без реальной даты источника. Виключается из метрик «новые за 24ч»",
+      "default": false
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Теги угрозы",
+      "default": []
+    },
+    "url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Ссылка на источник угрозы"
+    },
+    "cve_id": {
+      "type": ["string", "null"],
+      "description": "Структурированный CVE-ID (если есть)"
+    },
+    "poc_published": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Дата публикации PoC (Cyber Timeline)"
+    },
+    "added_to_kev": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Дата добавления в CISA KEV (Cyber Timeline)"
+    },
+    "content_hash": {
+      "type": ["string", "null"],
+      "description": "Вспомогательный SHA-256 хеш нормализованного контента для меж-источниковой дедупликации (опционально)"
+    }
+  },
+  "additionalProperties": false
+}

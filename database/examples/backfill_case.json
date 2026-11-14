@@ -1,0 +1,22 @@
+{
+  "scenario": "Бэкфилл (технический импорт без реальной даты)",
+  "existing": {
+    "external_id": "SPAMHAUS-001",
+    "source": "Spamhaus DROP",
+    "published": "2023-01-01T00:00:00",
+    "is_backfill": false
+  },
+  "new": {
+    "external_id": "SPAMHAUS-001",
+    "source": "Spamhaus DROP",
+    "published": "2024-10-27T12:00:00",
+    "is_backfill": true
+  },
+  "result": {
+    "external_id": "SPAMHAUS-001",
+    "source": "Spamhaus DROP",
+    "published": "2023-01-01T00:00:00",
+    "is_backfill": true,
+    "note": "published не перезаписан, так как новая запись is_backfill=True. Старая дата сохранена."
+  }
+}

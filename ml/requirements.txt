@@ -1,0 +1,6 @@
+# Залежності тільки для ML-експериментів (окремо від бекенду).
+# Встановлення: pip install -r ml/requirements.txt
+pandas>=2.2.0
+scikit-learn>=1.4.0
+numpy>=1.26.0
+dpkt>=1.9.8
