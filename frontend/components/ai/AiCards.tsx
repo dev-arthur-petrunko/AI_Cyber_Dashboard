@@ -489,23 +489,9 @@ export function AiPreviewCard() {
                 </p>
               )}
             </div>
-
-            {/* Tags row */}
-            <div className="mt-auto flex flex-wrap gap-1">
-              {["DDoS", "IOC", t.sections.aiVendor, t.sections.aiUkraine ?? "Україна"].map((label) => (
-                <span key={label} className="rounded-md border border-border bg-panel-raised/50 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted">
-                  {label}
-                </span>
-              ))}
-              {data && (
-                <span className="rounded-md border border-primary/20 bg-primary/5 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-primary">
-                  {data.tokens.total}t
-                </span>
-              )}
-            </div>
             </div>
 
-            {/* CTA arrow */}
+            {/* CTA-стрілка */}
             <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-panel-raised transition-all duration-300 group-hover:border-primary/30 group-hover:bg-primary/5">
               <svg className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
