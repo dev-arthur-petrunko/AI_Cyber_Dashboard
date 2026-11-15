@@ -47,7 +47,8 @@ function shapeFor(mood: Mood, side: -1 | 1): Shape {
     case "sad":
       return { ...base, ry: 4.0, rot: -26 * side, dy: 0.8 };
     case "sleepy":
-      return { ...base, rx: 3.0, ry: 1.0 };
+      // половина-заплющені, але читаються як очі (не «- -» риски)
+      return { ...base, rx: 3.0, ry: 2.0, dy: 0.6 };
     default:
       return base;
   }
@@ -61,7 +62,10 @@ const EYE_Y = -1;
 const MOOD_LOOK: Partial<Record<Mood, [number, number]>> = {
   thinking: [-3.5, -4], sad: [0, 4], sleepy: [0, 1.5], surprised: [0, -1],
 };
-const MOOD_SQUINT: Partial<Record<Mood, number>> = { sleepy: 0.85, sad: 0.3, angry: 0.2 };
+/** Стан щуріння. sleepy НЕ має давати рисок («- -»): сон уже дає очі-лінійки
+ *  через shapeFor — тому sleepy прибрано з squint, щоб агент лишався «живим».
+ *  Тонкі риски — ТІЛЬКИ миттєва сценка «щуриться» (~1.5 с раз на 4–9 с). */
+const MOOD_SQUINT: Partial<Record<Mood, number>> = { sad: 0.3, angry: 0.2 };
 
 /** Геометрія прямокутника ока. sq ≥ 0.5 (щуріння/сон) → ТОНКА ЛІНІЯ. */
 function rectGeom(s: Shape, sq: number) {
@@ -189,9 +193,8 @@ export function Agent({
         el?.classList.add("blinking");
         t2 = setTimeout(() => {
           el?.classList.remove("blinking");
-          const rare = mood === "sleepy" || mood === "sad";
           blink();
-        }, 320);
+        }, 140); // коротке моргання — очі майже не «застигають» закритими
       }, (mood === "sleepy" || mood === "sad" ? 7000 + Math.random() * 7000 : 3500 + Math.random() * 4000));
     };
     blink();

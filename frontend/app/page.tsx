@@ -232,12 +232,12 @@ export default function DashboardPage() {
                   одного розміру; AI-колонка тягнеться рівно на 2 ряди */}
               <div className="grid grid-cols-2 gap-2 auto-rows-fr sm:gap-2.5 md:grid-cols-4" data-agent-cards>
                 {/* Р СЏРґ 1 */}
-                <div data-agent-target="critical"><StatCard label={t.stats.critical} value={stats?.critical_threats ?? "вЂ”"} accent="critical" icon={<BoltIcon />} delay={0} hint={(t as any).statsHints?.critical} /></div>
-                <div data-agent-target="active"><StatCard label={t.stats.active} value={stats?.active_exploits ?? "вЂ”"} accent="warning" icon={<TargetIcon />} delay={60} hint={(t as any).statsHints?.active} /></div>
-                <div data-agent-target="new24"><StatCard label={t.stats.new24h} value={stats?.new_cve_24h ?? "вЂ”"} accent="signal" icon={<SparklesIcon />} delay={120} hint={(t as any).statsHints?.new24h} /></div>
-                <div data-agent-target="epss"><StatCard label={stats?.risk_label === "High/Critical" ? t.stats.highSeverity : t.stats.epssRisk} value={stats?.high_epss_risk ?? "вЂ”"} accent="warning" icon={<ChartIcon />} delay={180} hint={(t as any).statsHints?.epssRisk} /></div>
+                <div data-agent-target="critical"><StatCard label={t.stats.critical} value={stats?.critical_threats ?? "—"} accent="critical" icon={<BoltIcon />} delay={0} hint={(t as any).statsHints?.critical} /></div>
+                <div data-agent-target="active"><StatCard label={t.stats.active} value={stats?.active_exploits ?? "—"} accent="warning" icon={<TargetIcon />} delay={60} hint={(t as any).statsHints?.active} /></div>
+                <div data-agent-target="new24"><StatCard label={t.stats.new24h} value={stats?.new_cve_24h ?? "—"} accent="signal" icon={<SparklesIcon />} delay={120} hint={(t as any).statsHints?.new24h} /></div>
+                <div data-agent-target="epss"><StatCard label={stats?.risk_label === "High/Critical" ? t.stats.highSeverity : t.stats.epssRisk} value={stats?.high_epss_risk ?? "—"} accent="warning" icon={<ChartIcon />} delay={180} hint={(t as any).statsHints?.epssRisk} /></div>
                 {/* Р СЏРґ 2 */}
-                <div data-agent-target="ua"><StatCard label={t.stats.uaAlerts} value={stats?.ua_alerts ?? "вЂ”"} icon={<UaFlag className="h-5 w-8 rounded shadow-sm sm:h-6 sm:w-9" />} delay={240} hint={(t as any).statsHints?.uaAlerts} /></div>
+                <div data-agent-target="ua"><StatCard label={t.stats.uaAlerts} value={stats?.ua_alerts ?? "—"} icon={<UaFlag className="h-5 w-8 rounded shadow-sm sm:h-6 sm:w-9" />} delay={240} hint={(t as any).statsHints?.uaAlerts} /></div>
                 {/* Вікно: AI-аналіз України (посилання) */}
                 <Link
                   href="/ai?tab=ukraine"
@@ -256,11 +256,11 @@ export default function DashboardPage() {
                     AI
                   </p>
                   <span className="mt-1.5 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-wider text-text-muted transition-transform duration-300 group-hover:translate-x-0.5">
-                    {t.sections.aiAnalyze ?? ""} в†’
+                    {t.sections.aiAnalyze ?? ""} →
                   </span>
                 </Link>
                 <div data-agent-target="records"><StatCard label={t.header.records.length > 20 ? "Всього записів" : t.header.records} value={stats?.total_threats ?? "—"} icon={<DatabaseIcon />} delay={360} /></div>
-                <div data-agent-target="sources"><StatCard label={t.header.sources} value={sourcesMeta ? `${sourcesMeta.active}/${sourcesMeta.total}` : "вЂ”"} icon={<SourcesIconSmall />} delay={420} /></div>
+                <div data-agent-target="sources"><StatCard label={t.header.sources} value={sourcesMeta ? `${sourcesMeta.active}/${sourcesMeta.total}` : "—"} icon={<SourcesIconSmall />} delay={420} /></div>
               </div>
 
               {/* Збоку: AI-аналіз — h-full, закінчується рівно на 2-му ряді */}
@@ -680,7 +680,7 @@ function formatSourcesLine(
 ) {
   const template = (t.header as { sourcesCounter?: string }).sourcesCounter;
   if (!template) return `${meta.active} / ${meta.total}`;
-  let dateLabel = "вЂ”";
+  let dateLabel = "—";
   const d = parseApiDate(meta.lastFetched);
   if (d) {
     const locale = lang === "uk" ? "uk-UA" : lang;
@@ -841,7 +841,7 @@ function SponsorInfraPanel({
     return (
       <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3">
         <p className="text-xs font-semibold text-text-primary">
-          {t.sections.sponsorInfraTitle} вЂ” {name}
+          {t.sections.sponsorInfraTitle} — {name}
         </p>
         <p className="mt-1 text-[10px] italic text-text-muted">
           {t.sections.sponsorInfraEmpty}
@@ -859,7 +859,7 @@ function SponsorInfraPanel({
   return (
     <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3">
       <p className="text-xs font-semibold text-text-primary">
-        {t.sections.sponsorInfraTitle} вЂ” {name}
+        {t.sections.sponsorInfraTitle} — {name}
       </p>
       <p className="mb-2 mt-0.5 text-[10px] text-text-muted">
         {t.sections.sponsorInfraSubtitle}

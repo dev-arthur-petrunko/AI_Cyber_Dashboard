@@ -39,7 +39,8 @@ export function moodFromSignals(s: AgentSignals): Mood {
 
 /**
  * dataMood для <Agent mood=…/>:
- * сигнали → за замовчуванням; idle >60с без дій → sleepy (поки немає інших сигналів).
+ * сигнали → за замовчуванням; idle >60с → sleepy (очі-лінійки НЕ ставимо —
+ *  sleepy тепер малюється напівзаплющеними, але читабельними очима).
  */
 export function useAgentMood(signals: AgentSignals = {}): Mood {
   const [idle, setIdle] = useState(false);
@@ -49,7 +50,7 @@ export function useAgentMood(signals: AgentSignals = {}): Mood {
     const reset = () => {
       setIdle(false);
       clearTimeout(timer);
-      timer = setTimeout(() => setIdle(true), 60_000);
+      timer = setTimeout(() => setIdle(true), 180_000);
     };
     reset();
     const events: (keyof WindowEventMap)[] = [

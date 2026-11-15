@@ -698,7 +698,7 @@
   background: var(--border-strong);
   border-radius: 999px;
 }
-/* --- DDoS planet: ��������� ���� ���� --------------------------- */
+/* --- DDoS planet: біжучий пунктир дуг атак ---------------------- */
 @keyframes ddos-dash {
   to {
     stroke-dashoffset: -64;
