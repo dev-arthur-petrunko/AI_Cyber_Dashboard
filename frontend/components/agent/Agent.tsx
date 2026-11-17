@@ -174,7 +174,7 @@ export function Agent({
           setScene(SCENES[Math.floor(Math.random() * SCENES.length)]);
         }
         next();
-      }, 4000 + Math.random() * 5000);
+      }, 2400 + Math.random() * 3200); // частіші погляди — «живіше»
     };
     next();
     return () => { alive = false; clearTimeout(t); };
@@ -272,7 +272,7 @@ export function Agent({
 
   const tilt = mood === "thinking" ? -5 : mood === "sad" ? 4 : 0;
   const sink = mood === "sad" ? 1.5 : 0;
-  const sway = mood === "neutral";
+  const sway = mood !== "angry"; // гойдається майже завжди — агент «живий»
 
   return (
     <svg
@@ -333,7 +333,7 @@ export function Agent({
                   <circle r={16} fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth={0.6} />
 
                   {/* Погляд: одна ціль — CSS-перехід 650 мс (пружний) */}
-                  <g style={{ transform: `translate(${gx}px, ${gy}px)`, transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 650ms cubic-bezier(0.22,1,0.36,1)" }}>
+                  <g style={{ transform: `translate(${gx}px, ${gy}px)`, transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 420ms cubic-bezier(0.34,1.56,0.64,1)" }}>
                     {/* Моргання (клас .blinking на <svg>) */}
                     <g className="ag-blinkwrap" style={{ transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 260ms ease-in-out" }}>
                       {/* Ліве око */}
@@ -419,18 +419,18 @@ export function Agent({
           transform-box: fill-box;
           transform-origin: 50% 100%;
         }
-        /* Дихання ±2% */
+        /* Дихання ±3.2% — помітніше, але не вульгарно */
         @keyframes ag-breathe-kf {
           0%, 100% { transform: scale(1); }
-          50%      { transform: scale(1.02); }
+          50%      { transform: scale(1.032); }
         }
-        .ag-breathe { animation: ag-breathe-kf 3.4s ease-in-out infinite; }
-        /* Легке гойдання корпусу */
+        .ag-breathe { animation: ag-breathe-kf 2.6s ease-in-out infinite; }
+        /* Живе гойдання корпусу (трохи більша амплітуда, швидше) */
         @keyframes ag-sway-kf {
-          0%, 100% { transform: rotate(-0.8deg); }
-          50%      { transform: rotate(0.8deg); }
+          0%, 100% { transform: rotate(-1.7deg) translateY(0); }
+          50%      { transform: rotate(1.7deg) translateY(-0.5px); }
         }
-        .ag-sway { animation: ag-sway-kf 6s ease-in-out infinite; }
+        .ag-sway { animation: ag-sway-kf 4.6s ease-in-out infinite; }
         /* Дрожі angry */
         @keyframes ag-shake-kf {
           0%, 100% { transform: translateX(0); }

@@ -21,7 +21,6 @@ import { AiPreviewCard } from "@/components/ai/AiCards";
 import { MethodologyPanel } from "@/components/MethodologyPanel";
 import { Agent } from "@/components/agent/Agent";
 import { AgentLinkLayer } from "@/components/agent/AgentLinkLayer";
-import { AgentRoamer } from "@/components/agent/AgentRoamer";
 import { useAgentMood } from "@/components/agent/useAgentMood";
 import { useTranslation } from "@/components/LanguageContext";
 import { Translations, Language, SPONSOR_NAMES } from "@/lib/i18n";
@@ -185,8 +184,7 @@ export default function DashboardPage() {
       <div className="relative min-h-screen">
         {/* Кабель «ноутбук → картка» поверх контенту (pointer-events: none) */}
         <AgentLinkLayer anchor={agentAnchor} targetSelector="[data-agent-target]" />
-        {/* Гастролюючий агент ховається під час ноутбук-сцени (щоб не було 3+) */}
-        <AgentRoamer hidden={agentLaptop} />
+        {/* Роумер-агент у картках тимчасово вимкнено (запит власника) */}
         <div className="relative z-10 mx-auto max-w-7xl px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-8">
           {/* Рядок статусу перенесено у меню (TopNav, 2-й рядок) */}
 
@@ -199,15 +197,13 @@ export default function DashboardPage() {
               <span className="text-glow-strong text-text-primary">
                 CYBER
               </span>
-              <span className="inline-flex items-center justify-center rounded-full border border-border-strong bg-panel px-0.5 py-0.5 shadow-sm sm:px-1">
-                <Agent
-                  mood={agentMood}
-                  size={40}
-                  className="sm:h-[56px] sm:w-[56px] lg:h-[68px] lg:w-[68px]"
-                  laptop={agentLaptop}
-                  onLaptopAnchor={setAgentAnchor}
-                />
-              </span>
+              <Agent
+                mood={agentMood}
+                size={54}
+                className="sm:h-[68px] sm:w-[68px] lg:h-[84px] lg:w-[84px]"
+                laptop={agentLaptop}
+                onLaptopAnchor={setAgentAnchor}
+              />
               <span className="text-glow-strong text-text-primary">
                 SENTINEL
               </span>
