@@ -178,20 +178,26 @@ function ThreatGlobe({
     let last = performance.now();
     // Момент відновлення автоповороту (для плавного розгону після drag/паузи).
     let resumedAt = 0;
+    let acc = 0; // накопичувач часу → оновлення стану раз на 100 мс
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
       if (dragRef.current || reducedMotion.current || norotate) {
         last = now;
         resumedAt = 0;
+        acc = 0;
         return;
       }
       if (now - lastInteractRef.current < 3500) {
         last = now;
         resumedAt = 0;
+        acc = 0;
         return;
       }
       const dt = now - last;
       last = now;
+      acc += dt;
+      if (acc < 100) return; // мікрофікс лагів: setRot раз на 100 мс, не 60×/с
+      acc = 0;
       if (!resumedAt) resumedAt = now;
       // Плавний старт: повна швидкість за ~700 мс після відновлення,
       // щоб куля не «ривалась» з місця після відпускання або паузи.

@@ -62,10 +62,12 @@ export function StatCard({
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 4); // ease-out quart for smoother feel
       setDisplayValue(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(animate);
+      if (progress < 1) raf = requestAnimationFrame(animate);
     }
-    requestAnimationFrame(animate);
+    let raf = requestAnimationFrame(animate);
     prevValue.current = value;
+    // мікрофікс: при розмонтуванні/новому значенні — скасувати попередній цикл
+    return () => cancelAnimationFrame(raf);
   }, [value]);
 
   return (

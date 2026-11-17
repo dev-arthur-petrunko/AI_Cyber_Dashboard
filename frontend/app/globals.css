@@ -480,12 +480,12 @@
 .card,
 .glass-card {
   position: relative;
-  /* Ч/б: панель карток майже непрозора — фонові частинки НЕ проступають під цифрами */
+  /* Ч/б: панель майже непрозора. Backdrop-blur прибрано (мікрофікс лагів):
+     blur перераховувався щокадрово під кожною карткою, поки за нею щось
+     рухалось (глобус, лічильники, агент); фон уже матовий — тіні непотрібні. */
   background: var(--panel-card);
   border: 1px solid var(--border);
   border-radius: 0.875rem;
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  backdrop-filter: blur(14px) saturate(150%);
   box-shadow:
     0 12px 32px -14px rgb(10 20 40 / 0.28),
     0 2px 8px -2px rgb(10 20 40 / 0.14),
@@ -627,7 +627,9 @@
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: rotate-gradient 4s linear infinite;
+  /* Раніше: animation: rotate-gradient 4s linear infinite — конічний градієнт
+     + mask-composite репейнтяться щокадрово (найдорожчий тип репейнту).
+     Мікрофікс лагів: рамка статична, стиль не змінюється. */
   pointer-events: none;
 }
 

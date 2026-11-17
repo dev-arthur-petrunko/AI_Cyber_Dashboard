@@ -4,7 +4,9 @@ import { JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageContext";
-import { AgentProvider } from "@/components/agent/AgentProvider";
+// AgentProvider (спільний rAF + mousemove для «стеження за курсором») прибрано:
+// агент НЕ стежить за курсором (рішення власника), useAgentCursorTick ніхто не
+// викликає → цикл працював даремно 60 fps на КОЖНІЙ сторінці (мікрофрейми).
 import { Language, translations } from "@/lib/i18n";
 
 const inter = Inter({
@@ -38,7 +40,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-                themeColor: "#050505",
+  themeColor: "#050505",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -64,11 +66,9 @@ const isDark = theme ? theme === 'dark' : true;
       <body>
         {/* Фон: матовий чорний без анімацій/частинок (запит власника) */}
         <LanguageProvider>
-          <AgentProvider>
-            <div className="relative z-10">
-              {children}
-            </div>
-          </AgentProvider>
+          <div className="relative z-10">
+            {children}
+          </div>
         </LanguageProvider>
       </body>
     </html>

@@ -75,7 +75,7 @@ function rectGeom(s: Shape, sq: number) {
   return { x: -w / 2, y: -h / 2, width: w, height: h, rx: Math.min(w, h) / 2 };
 }
 
-type Scene = { gx: number; gy: number; squint: number; wink: boolean };
+type Scene = { gx: number; gy: number; squint: number; wink: boolean; spin?: boolean; pop?: boolean };
 
 /** 9 випадкових сценок (плюс «центр»). */
 const SCENES: Scene[] = [
@@ -117,7 +117,7 @@ export function Agent({
   const anchorCb = useRef(onLaptopAnchor);
   const reducedRef = useRef(false);
 
-  const [scene, setScene] = useState<Scene>({ gx: 0, gy: 0, squint: 0, wink: false });
+  const [scene, setScene] = useState<Scene>({ gx: 0, gy: 0, squint: 0, wink: false, spin: false, pop: false });
   const [ovr, setOvr] = useState<{ mood: Mood; until: number } | null>(null);
   const [hover, setHover] = useState(false);
   const [jumping, setJumping] = useState(false);
@@ -194,8 +194,8 @@ export function Agent({
         t2 = setTimeout(() => {
           el?.classList.remove("blinking");
           blink();
-        }, 140); // коротке моргання — очі майже не «застигають» закритими
-      }, (mood === "sleepy" || mood === "sad" ? 7000 + Math.random() * 7000 : 3500 + Math.random() * 4000));
+        }, 160); // моргання 160 мс — швидке ниряння, без «зависань»
+      }, (mood === "sleepy" || mood === "sad" ? 7000 + Math.random() * 7000 : 3000 + Math.random() * 3000));
     };
     blink();
     return () => { alive = false; clearTimeout(t1); clearTimeout(t2); };
@@ -308,6 +308,10 @@ export function Agent({
           <stop offset="70%" stopColor="#E5322D" />
           <stop offset="100%" stopColor="#B71C1C" />
         </radialGradient>
+        {/* Кліп купола — для «кружіння» (очі йдуть за шар) */}
+        <clipPath id={`ag-clip-${uid}`}>
+          <circle cx="0" cy="0" r="16.5" transform="translate(20 21)" />
+        </clipPath>
         <radialGradient id={`ag-gloss-${uid}`} cx="30%" cy="24%" r="55%">
           <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.75" />
           <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
@@ -318,12 +322,12 @@ export function Agent({
       <g className={jumping ? "ag-jump" : undefined}>
         {/* Центр корпусу (статичний атрибут — не анімується) */}
         <g transform={`translate(20 ${21 + sink})`}>
-          {/* Гойдання корпусу (недовірливий/спокійний) */}
+          {/* Гойдання корпусу (спека ±2,5°) */}
           <g className={sway ? "ag-sway" : undefined} style={{ transformBox: "fill-box", transformOrigin: "50% 100%" }}>
             {/* Нахил емоції (CSS-перехід) */}
             <g style={{ transform: `rotate(${tilt}deg)`, transformBox: "fill-box", transformOrigin: "50% 100%", transition: "transform 600ms cubic-bezier(0.22,1,0.36,1)" }}>
               {/* Дихання */}
-              <g className="ag-breathe" style={{ transformBox: "fill-box", transformOrigin: "50% 55%" }}>
+              <g className={scene.pop ? "ag-pop" : undefined} style={{ transformBox: "fill-box", transformOrigin: "50% 55%" }}>
                 {/* Дрожі angry */}
                 <g className={mood === "angry" ? "ag-shake" : undefined}>
                   {/* Тіло: нормальне + червоний шар (затухає 300 мс) */}
@@ -333,9 +337,10 @@ export function Agent({
                   <circle r={16} fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth={0.6} />
 
                   {/* Погляд: одна ціль — CSS-перехід 650 мс (пружний) */}
-                  <g style={{ transform: `translate(${gx}px, ${gy}px)`, transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 420ms cubic-bezier(0.34,1.56,0.64,1)" }}>
+                  <g className={scene.spin ? "ag-spin" : undefined} clipPath={`url(#ag-clip-${uid})`} style={{ transform: `translate(${gx}px, ${gy}px)`, transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 420ms cubic-bezier(0.34,1.56,0.64,1)" }}>
                     {/* Моргання (клас .blinking на <svg>) */}
-                    <g className="ag-blinkwrap" style={{ transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 260ms ease-in-out" }}>
+                    {/* Моргання 160 мс — очі швидко «ниряють» за пол */}
+                    <g className="ag-blinkwrap" style={{ transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 160ms cubic-bezier(0.4, 0, 0.2, 1)" }}>
                       {/* Ліве око */}
                       <g style={{ transform: eyeTransform(sL, EYE_LX), transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 450ms cubic-bezier(0.22,1,0.36,1)" }}>
                         <rect
@@ -419,18 +424,35 @@ export function Agent({
           transform-box: fill-box;
           transform-origin: 50% 100%;
         }
-        /* Дихання ±3.2% — помітніше, але не вульгарно */
-        @keyframes ag-breathe-kf {
-          0%, 100% { transform: scale(1); }
-          50%      { transform: scale(1.032); }
-        }
-        .ag-breathe { animation: ag-breathe-kf 2.6s ease-in-out infinite; }
-        /* Живе гойдання корпусу (трохи більша амплітуда, швидше) */
+        /* Дихання ВИМКНЕНО (запит власника): корпус не зменшується/не
+           збільшується — тільки живе покачування. */
+        /* Покачування купола: спека ±2,5°; очі запаздують самі (желе) */
         @keyframes ag-sway-kf {
-          0%, 100% { transform: rotate(-1.7deg) translateY(0); }
-          50%      { transform: rotate(1.7deg) translateY(-0.5px); }
+          0%, 100% { transform: rotate(-2.5deg) translateY(0); }
+          50%      { transform: rotate(2.5deg) translateY(-0.5px); }
         }
         .ag-sway { animation: ag-sway-kf 4.6s ease-in-out infinite; }
+        /* Кружіння: очі «йдуть за шар» і з'являються з іншого боку (кліп) */
+        @keyframes ag-spin-kf {
+          0%    { transform: translateX(0); }
+          34%   { transform: translateX(15px); }
+          34.1% { transform: translateX(-15px); }
+          68%   { transform: translateX(0); }
+          100%  { transform: translateX(0); }
+        }
+        .ag-spin { animation: ag-spin-kf 1.6s cubic-bezier(0.45, 0, 0.55, 1); }
+        /* Удивлення: купол підскакує з перелітом (squash & stretch) */
+        @keyframes ag-pop-kf {
+          0%   { transform: scaleY(1); }
+          35%  { transform: scaleY(1.02) scaleX(0.99); }
+          70%  { transform: scaleY(0.99); }
+          100% { transform: scaleY(1); }
+        }
+        .ag-pop {
+          animation: ag-pop-kf 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transform-box: fill-box;
+          transform-origin: 50% 100%;
+        }
         /* Дрожі angry */
         @keyframes ag-shake-kf {
           0%, 100% { transform: translateX(0); }
@@ -439,7 +461,7 @@ export function Agent({
         }
         .ag-shake { animation: ag-shake-kf 0.1s linear infinite; }
         /* Моргання (клас .blinking на батьківському <svg>) */
-        svg.blinking .ag-blinkwrap { transform: scaleY(0.06); transition-duration: 150ms; }
+        svg.blinking .ag-blinkwrap { transform: scaleY(0.05); transition-duration: 160ms; }
         /* Підмигування правим окном */
         .ag-winkwrap { transform: scaleY(0.07); }
         /* Паріння ноутбука */
