@@ -3,10 +3,11 @@
 import { AdminShell } from "@/components/AdminShell";
 import { useTranslation } from "@/components/LanguageContext";
 
-const VERSION = "v1.5.2";
+const VERSION = "v2.0";
 
-const VERSION_GROUPS: { key: string; version: string; itemsKey: "v1_5_2" | "v1_5_1" | "v1_5_0" | "v1_4_9" | "v1_4_8" | "v1_4_7" | "v1_4_5" | "v1_4_2" | "v1_4_0" | "v1_3_8" | "v1_3_5" | "v1_3_0" | "v1_2_4" | "v1_2" | "v1_1" | "v1_0" }[] = [
-  { key: "current", version: VERSION, itemsKey: "v1_5_2" },
+const VERSION_GROUPS: { key: string; version: string; itemsKey: "v2_0" | "v1_5_2" | "v1_5_1" | "v1_5_0" | "v1_4_9" | "v1_4_8" | "v1_4_7" | "v1_4_5" | "v1_4_2" | "v1_4_0" | "v1_3_8" | "v1_3_5" | "v1_3_0" | "v1_2_4" | "v1_2" | "v1_1" | "v1_0" }[] = [
+  { key: "current", version: VERSION, itemsKey: "v2_0" },
+  { key: "v1.5.2", version: "v1.5.2", itemsKey: "v1_5_2" },
   { key: "v1.5.1", version: "v1.5.1", itemsKey: "v1_5_1" },
   { key: "v1.5.0", version: "v1.5.0", itemsKey: "v1_5_0" },
   { key: "v1.4.9", version: "v1.4.9", itemsKey: "v1_4_9" },
