@@ -68,3 +68,6 @@ tmp_*
 /*.png
 *.pptx
 *.xlsx
+.agents/
+skills-lock.json
+data/geo_cache.json

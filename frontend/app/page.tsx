@@ -268,7 +268,7 @@ export default function DashboardPage() {
 
           {/* Threat map + Top attacker countries (side by side) */}
           <section className="mb-4 grid grid-cols-1 gap-4 animate-fade-in-up sm:mb-6 lg:grid-cols-3" style={{ animationDelay: "180ms" }}>
-            <div className="card hud-corners gradient-border-animated p-4 sm:p-5 lg:col-span-2" data-agent-roam>
+            <div className="card hud-corners gradient-border-animated p-4 sm:p-5 lg:col-span-2">
               <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
                 <h2 className="flex min-w-0 items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-text-secondary sm:text-xs">
                   <span className={`dot-glow inline-block h-2 w-2 flex-shrink-0 animate-pulse rounded-full ${mapMode === "ddos" ? "bg-critical text-critical" : "bg-primary text-primary"}`} />
@@ -383,7 +383,7 @@ export default function DashboardPage() {
                 </>
               )}
             </div>
-            <div className="card hud-corners p-4 sm:p-5" data-agent-roam>
+            <div className="card hud-corners p-4 sm:p-5">
               <HudTitle
                 label={mapMode === "ddos" ? (ddosSide === "targets" ? t.map.ddos.targets : t.map.ddos.origins) : t.sections.topAttackerCountries}
                 accent="signal"
@@ -422,7 +422,7 @@ export default function DashboardPage() {
             </div>
           </section>
           <section className="mb-4 animate-fade-in-up sm:mb-6" style={{ animationDelay: "260ms" }}>
-            <div className="card p-4 sm:p-5" data-agent-roam>
+            <div className="card p-4 sm:p-5">
               <HudTitle label={t.sections.actorTracker} accent="critical" className="mb-1" />
               <p className="mb-2 text-xs text-text-secondary sm:text-sm">{t.sections.actorTrackerSubtitle}</p>
               {loading ? (
@@ -437,7 +437,7 @@ export default function DashboardPage() {
 
           {/* Sponsor countries */}
           <section className="mb-4 animate-fade-in-up sm:mb-6" style={{ animationDelay: "280ms" }}>
-            <div className="card p-4 sm:p-5" title={t.sections.sponsorCardTooltip} data-agent-roam>
+            <div className="card p-4 sm:p-5" title={t.sections.sponsorCardTooltip}>
               <HudTitle label={t.sections.sponsorChart} accent="critical" className="mb-1" />
               <p className="mb-2 text-xs text-text-secondary sm:text-sm">{t.sections.sponsorChartSubtitle}</p>
               {loading ? (
@@ -465,7 +465,7 @@ export default function DashboardPage() {
 
           {/* Top vendors — на всю ширину (була поруч із «За джерелами» у 2/3+1/3) */}
           <section className="mb-6 sm:mb-8">
-            <div className="animate-fade-in-up glass-card rounded-xl border border-border p-4 shadow-sm sm:p-5" style={{ animationDelay: "290ms" }} data-agent-roam>
+            <div className="animate-fade-in-up glass-card rounded-xl border border-border p-4 shadow-sm sm:p-5" style={{ animationDelay: "290ms" }}>
               <HudTitle label={t.sections.topVendors} accent="critical" className="mb-2 sm:mb-3" />
               <VendorChart data={stats?.top_vendors ?? []} dense />
               <p className="mt-3 text-[10px] italic text-text-muted">

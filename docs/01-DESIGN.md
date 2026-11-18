@@ -133,7 +133,7 @@
 Приоритет: `angry > alert > sad > thinking > happy > surprised > sleepy > neutral`.
 
 ### 8.3 Привязка к данным (`useAgentMood`)
-`loading → thinking`, `нет данных / idle 60с → sleepy`, `ошибка backend → sad`,
+`loading → thinking`, `нет данных / idle 180с → sleepy`, `ошибка backend → sad`,
 `criticalRise → angry`, `ddosUp → alert`; клик по агенту = обновление.
 
 ### 8.4 Движения (реализация — ОДИН `requestAnimationFrame`)

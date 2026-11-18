@@ -4,9 +4,6 @@ import { JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageContext";
-// AgentProvider (спільний rAF + mousemove для «стеження за курсором») прибрано:
-// агент НЕ стежить за курсором (рішення власника), useAgentCursorTick ніхто не
-// викликає → цикл працював даремно 60 fps на КОЖНІЙ сторінці (мікрофрейми).
 import { Language, translations } from "@/lib/i18n";
 
 const inter = Inter({

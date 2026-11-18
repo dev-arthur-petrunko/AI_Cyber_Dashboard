@@ -607,9 +607,6 @@
   initial-value: 0deg;
   inherits: false;
 }
-@keyframes rotate-gradient {
-  to { --angle: 360deg; }
-}
 .gradient-border-animated {
   position: relative;
   z-index: 0;
@@ -627,9 +624,8 @@
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  /* Раніше: animation: rotate-gradient 4s linear infinite — конічний градієнт
-     + mask-composite репейнтяться щокадрово (найдорожчий тип репейнту).
-     Мікрофікс лагів: рамка статична, стиль не змінюється. */
+  /* Статична градієнтна рамка: безкінечне обертання градієнта прибрано
+     (репейнт щокадрово був причиною мікролагів). */
   pointer-events: none;
 }
 

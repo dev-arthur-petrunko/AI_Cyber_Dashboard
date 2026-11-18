@@ -194,7 +194,7 @@ export function Agent({
         t2 = setTimeout(() => {
           el?.classList.remove("blinking");
           blink();
-        }, 160); // моргання 160 мс — швидке ниряння, без «зависань»
+        }, 40); // пауза 40 мс — разом ≈160 мс за спекою (60+40+60)
       }, (mood === "sleepy" || mood === "sad" ? 7000 + Math.random() * 7000 : 3000 + Math.random() * 3000));
     };
     blink();
@@ -309,8 +309,10 @@ export function Agent({
           <stop offset="100%" stopColor="#B71C1C" />
         </radialGradient>
         {/* Кліп купола — для «кружіння» (очі йдуть за шар) */}
+        {/* Кліп купола для «кружіння»: коло в ЛОКАЛЬНІЙ системі очей
+            (центр = центр купола) — БЕЗ зсуву, інакше очі зрізаються. */}
         <clipPath id={`ag-clip-${uid}`}>
-          <circle cx="0" cy="0" r="16.5" transform="translate(20 21)" />
+          <circle cx="0" cy="0" r="16.5" />
         </clipPath>
         <radialGradient id={`ag-gloss-${uid}`} cx="30%" cy="24%" r="55%">
           <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.75" />
@@ -337,10 +339,10 @@ export function Agent({
                   <circle r={16} fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth={0.6} />
 
                   {/* Погляд: одна ціль — CSS-перехід 650 мс (пружний) */}
-                  <g className={scene.spin ? "ag-spin" : undefined} clipPath={`url(#ag-clip-${uid})`} style={{ transform: `translate(${gx}px, ${gy}px)`, transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 420ms cubic-bezier(0.34,1.56,0.64,1)" }}>
+                  <g className={scene.spin ? "ag-spin" : undefined} clipPath={`url(#ag-clip-${uid})`} style={{ transform: `translate(${gx}px, ${gy}px)`, transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 700ms cubic-bezier(0.22,1,0.36,1)" }}>
                     {/* Моргання (клас .blinking на <svg>) */}
                     {/* Моргання 160 мс — очі швидко «ниряють» за пол */}
-                    <g className="ag-blinkwrap" style={{ transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 160ms cubic-bezier(0.4, 0, 0.2, 1)" }}>
+                    <g className="ag-blinkwrap" style={{ transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 60ms cubic-bezier(0.4, 0, 0.2, 1)" }}>
                       {/* Ліве око */}
                       <g style={{ transform: eyeTransform(sL, EYE_LX), transformBox: "fill-box", transformOrigin: "50% 50%", transition: "transform 450ms cubic-bezier(0.22,1,0.36,1)" }}>
                         <rect
@@ -413,14 +415,17 @@ export function Agent({
         /* Стрибок: присідання → політ → приземлення → відскок */
         @keyframes ag-jump-kf {
           0%   { transform: translateY(0) scale(1, 1); }
-          14%  { transform: translateY(2px) scale(1.1, 0.84); }
-          42%  { transform: translateY(-8.5px) scale(0.95, 1.12); }
-          70%  { transform: translateY(0) scale(1.08, 0.9); }
-          86%  { transform: translateY(-1.8px) scale(0.98, 1.04); }
+          7%   { transform: translateY(2px) scale(1.1, 0.84); }   /* присідання */
+          22%  { transform: translateY(-7.5px) scale(0.95, 1.1); } /* 1-й стрибок */
+          37%  { transform: translateY(0) scale(1.07, 0.9); }      /* приземлення */
+          50%  { transform: translateY(-5.5px) scale(0.97, 1.06); }/* 2-й */
+          63%  { transform: translateY(0) scale(1.04, 0.94); }
+          76%  { transform: translateY(-3.5px) scale(0.98, 1.04); }/* 3-й */
+          88%  { transform: translateY(0) scale(1.02, 0.98); }
           100% { transform: translateY(0) scale(1, 1); }
         }
         .ag-jump {
-          animation: ag-jump-kf 0.62s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
+          animation: ag-jump-kf 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
           transform-box: fill-box;
           transform-origin: 50% 100%;
         }
@@ -461,7 +466,7 @@ export function Agent({
         }
         .ag-shake { animation: ag-shake-kf 0.1s linear infinite; }
         /* Моргання (клас .blinking на батьківському <svg>) */
-        svg.blinking .ag-blinkwrap { transform: scaleY(0.05); transition-duration: 160ms; }
+        svg.blinking .ag-blinkwrap { transform: scaleY(0.05); transition-duration: 60ms; }
         /* Підмигування правим окном */
         .ag-winkwrap { transform: scaleY(0.07); }
         /* Паріння ноутбука */
